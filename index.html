@@ -16,10 +16,10 @@
       --xp-color: #2563eb;
     }
     [data-theme="agent"] {
-      --primary: #dc2626; --primary-dark: #b91c1c; --primary-light: #f87171;
-      --secondary: #fbbf24; --secondary-dark: #f59e0b;
-      --bg: #0a0a0a; --card: #18181b; --text: #e4e4e7; --text2: #71717a;
-      --xp-color: #dc2626;
+      --primary: #00ff41; --primary-dark: #00cc33; --primary-light: #33ff66;
+      --secondary: #00ff41; --secondary-dark: #00cc33;
+      --bg: #0a0e0a; --card: #0d120d; --text: #00ff41; --text2: #1a6b2a;
+      --xp-color: #00ff41; --radius: 4px;
     }
     [data-theme="vintage"] {
       --primary: #92400e; --primary-dark: #78350f; --primary-light: #b45309;
@@ -32,6 +32,41 @@
       --secondary: #06b6d4; --secondary-dark: #0891b2;
       --bg: #c4b5fd; --card: #ddd6fe; --text: #1e1b4b; --text2: #6366f1;
       --font: "VT323", monospace; --radius: 0px; --xp-color: #7c3aed;
+    }
+
+    /* Agent / Palantir surveillance overrides */
+    [data-theme="agent"] .topbar { border-bottom: 1px solid #00ff4122; }
+    [data-theme="agent"] .theme-row { border-bottom: 1px solid #00ff4111; }
+    [data-theme="agent"] #europe-map { background: #060a06; border: 1px solid #00ff4133; }
+    [data-theme="agent"] .eu-country { fill: #0d2b0d; stroke: #00ff4155; stroke-width: 0.6; }
+    [data-theme="agent"] .eu-country:hover, [data-theme="agent"] .eu-country.hover { fill: #1a4d1a; }
+    [data-theme="agent"] .context-country { fill: #0a140a; stroke: #00ff4122; }
+    [data-theme="agent"] .country-label { fill: #00ff41; opacity: .7; }
+    [data-theme="agent"] .sea-label { fill: #00ff4133; }
+    [data-theme="agent"] .eu-country.correct { fill: #00ff41 !important; stroke: #00ff41; }
+    [data-theme="agent"] .eu-country.wrong { fill: #ff0040 !important; stroke: #ff0040; }
+    [data-theme="agent"] .eu-country.reveal { fill: #00ff4188 !important; }
+    [data-theme="agent"] .info-panel, [data-theme="agent"] .hud-prompt,
+    [data-theme="agent"] .mc-overlay .mc-prompt, [data-theme="agent"] .drawer,
+    [data-theme="agent"] .end-card {
+      border: 1px solid #00ff4133; box-shadow: 0 0 30px #00ff4111;
+    }
+    [data-theme="agent"] .mc-btn { border-color: #00ff4122; background: #0d120d; color: #00ff41; }
+    [data-theme="agent"] .mc-btn.correct { background: #00ff41; color: #000; }
+    [data-theme="agent"] .mc-btn.wrong { background: #ff0040; color: #fff; }
+    [data-theme="agent"] .btn { background: #00ff41; color: #000; box-shadow: 0 3px 0 #00cc33; }
+    [data-theme="agent"] .topbar-btn { border-color: #00ff41; color: #00ff41; }
+    [data-theme="agent"] .topbar-btn:hover, [data-theme="agent"] .topbar-btn.active { background: #00ff41; color: #000; }
+    [data-theme="agent"] .region-pill { border-color: #00ff4144; color: #00ff41; }
+    [data-theme="agent"] .region-pill.active { background: #00ff41; color: #000; border-color: #00ff41; }
+    [data-theme="agent"] .xp-bar { background: #0a0e0a; border-top: 1px solid #00ff4122; }
+    [data-theme="agent"] .xp-outer { background: #112211; }
+    [data-theme="agent"] .mode-btn { border-color: #00ff4122; }
+    [data-theme="agent"] .mode-btn:hover { border-color: #00ff41; }
+    /* Scanline overlay for agent theme */
+    [data-theme="agent"] #europe-map::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, #00ff4108 2px, #00ff4108 4px);
     }
 
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -285,7 +320,7 @@
   <!-- THEME ROW -->
   <div class="theme-row">
     <button class="theme-pill active" data-t="" onclick="setTheme(this)">Explorer</button>
-    <button class="theme-pill" data-t="agent" onclick="setTheme(this)">Agent</button>
+    <button class="theme-pill" data-t="agent" onclick="setTheme(this)">Surveillance</button>
     <button class="theme-pill" data-t="vintage" onclick="setTheme(this)">Old Map</button>
     <button class="theme-pill" data-t="pixel" onclick="setTheme(this)">Pixel</button>
   </div>
@@ -356,6 +391,7 @@
       <button class="mode-btn" onclick="launchGame('country')"><span class="icon">🌍</span>Countries<span class="desc">Capital → Country</span></button>
       <button class="mode-btn" onclick="launchGame('flag')"><span class="icon">🏳️</span>Flags<span class="desc">Flag → Country</span></button>
       <button class="mode-btn" onclick="launchGame('mix')"><span class="icon">🎲</span>Mix It Up!<span class="desc">All types</span></button>
+      <button class="mode-btn" onclick="launchGame('spaced')"><span class="icon">🧠</span>Smart Review<span class="desc">Spaced repetition</span></button>
     </div>
     <p style="font-weight:700;font-size:.85rem;margin-top:8px;text-align:center">Region</p>
     <div class="region-row">
@@ -555,14 +591,15 @@
       html += `<path d="${p.d}" class="eu-country" data-iso="${c.iso}" onclick="onCountryClick('${c.iso}')" ontouchend=""/>`;
     });
 
-    // Capital dots and labels
+    // Labels group (can be hidden during quiz)
+    html += '<g id="map-labels">';
     EU.forEach(c => {
       const p = SVG_PATHS[c.iso];
       if (!p) return;
-      // Label
       const fs = ["MT","LU","SI","CY"].includes(c.iso) ? 5 : (["BE","NL","DK","EE","LV","LT","SK","HR"].includes(c.iso) ? 5.5 : 6.5);
       html += `<text x="${p.cx}" y="${p.cy+2}" class="country-label" font-size="${fs}">${c.name}</text>`;
     });
+    html += '</g>';
 
     svg.innerHTML = html;
   }
@@ -648,9 +685,33 @@
     const countries = getFilteredCountries();
     if (!countries.length) { alert("No countries!"); return; }
 
-    const modes = mode === "mix" ? ["capital","country","flag","mapquiz"] : [mode];
     let pool = [];
-    countries.forEach(c => modes.forEach(m => pool.push({...c, mode: m})));
+    if (mode === "spaced") {
+      // Spaced repetition: score each country by weakness
+      const now = Date.now();
+      const scored = EU.map(c => {
+        const s = S.stats[c.iso];
+        if (!s) return { ...c, priority: 100 }; // Never seen = high priority
+        const ratio = s.attempts > 0 ? s.correct / s.attempts : 0;
+        const lastSeen = s.lastSeen || 0;
+        const hoursSince = (now - lastSeen) / 3600000;
+        // Lower ratio = higher priority; longer since seen = higher priority
+        // Streak reduces priority (already being learned)
+        const priority = (1 - ratio) * 50 + Math.min(hoursSince, 168) / 3 - s.streak * 5;
+        return { ...c, priority };
+      });
+      scored.sort((a, b) => b.priority - a.priority);
+      // Take top countries, mix question types
+      const pick = scored.slice(0, ROUND_SIZE);
+      const modes = ["capital", "country", "mapquiz"];
+      pick.forEach(c => {
+        const m = modes[Math.floor(Math.random() * modes.length)];
+        pool.push({ ...c, mode: m });
+      });
+    } else {
+      const modes = mode === "mix" ? ["capital","country","flag","mapquiz"] : [mode];
+      countries.forEach(c => modes.forEach(m => pool.push({...c, mode: m})));
+    }
     // Shuffle
     for (let i = pool.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
 
@@ -662,6 +723,11 @@
     document.getElementById("info-panel").classList.remove("show");
     document.getElementById("progress-bar").style.display = "block";
     document.getElementById("game-hud").classList.add("show");
+
+    // Hide labels during map quiz (too easy otherwise!)
+    const labels = document.getElementById("map-labels");
+    if (labels) labels.style.display = (mode === "mapquiz" || mode === "mix" || mode === "spaced") ? "none" : "";
+
     startTimer();
     nextQuestion();
   }
@@ -677,9 +743,10 @@
     const q = S.queue[S.qi];
     updateHUD();
 
-    // Reset map highlights
+    // Reset map highlights and zoom
+    resetZoom();
     document.querySelectorAll(".eu-country").forEach(el => {
-      el.classList.remove("correct","wrong","reveal","dimmed");
+      el.classList.remove("correct","wrong","reveal","dimmed","hover");
       el.style.fill = "";
     });
 
@@ -720,7 +787,7 @@
       addXP(xp);
       showFeedback(true);
       updateStat(q.iso, true);
-      if (S.streak % 5 === 0) confetti();
+      if (S.streak % 5 === 0) fireConfetti();
     } else {
       S.streak = 0;
       clicked?.classList.add("wrong");
@@ -735,6 +802,60 @@
       document.getElementById("hud-prompt").classList.remove("show");
       nextQuestion();
     }, isCorrect ? 800 : 2000);
+  }
+
+  // ==========================================
+  // MAP ZOOM
+  // ==========================================
+  const DEFAULT_VB = "0 0 1000 800";
+  function zoomToCountry(iso, padding) {
+    padding = padding || 80;
+    const el = document.querySelector(`.eu-country[data-iso="${iso}"]`);
+    if (!el) return;
+    const bbox = el.getBBox();
+    const svg = document.getElementById("europe-map");
+    const vx = Math.max(0, bbox.x - padding);
+    const vy = Math.max(0, bbox.y - padding);
+    const vw = Math.min(1000, bbox.width + padding * 2);
+    const vh = Math.min(800, bbox.height + padding * 2);
+    svg.setAttribute("viewBox", `${vx} ${vy} ${vw} ${vh}`);
+    svg.style.transition = "all .5s ease";
+  }
+  function resetZoom() {
+    const svg = document.getElementById("europe-map");
+    svg.setAttribute("viewBox", DEFAULT_VB);
+    svg.style.transition = "all .4s ease";
+    // Remove any capital markers
+    document.querySelectorAll(".capital-highlight").forEach(e => e.remove());
+  }
+  function showCapitalDot(iso) {
+    const p = SVG_PATHS[iso];
+    if (!p) return;
+    const svg = document.getElementById("europe-map");
+    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.setAttribute("cx", p.cx);
+    dot.setAttribute("cy", p.cy);
+    dot.setAttribute("r", "4");
+    dot.setAttribute("class", "capital-highlight");
+    dot.style.fill = "#ff0";
+    dot.style.stroke = "#c00";
+    dot.style.strokeWidth = "1.5";
+    dot.style.pointerEvents = "none";
+    svg.appendChild(dot);
+    // Pulsing label
+    const lbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    lbl.setAttribute("x", p.cx);
+    lbl.setAttribute("y", p.cy - 8);
+    lbl.setAttribute("class", "capital-highlight");
+    lbl.setAttribute("text-anchor", "middle");
+    lbl.style.fontSize = "7px";
+    lbl.style.fontWeight = "900";
+    lbl.style.fill = "#ff0";
+    lbl.style.stroke = "#000";
+    lbl.style.strokeWidth = "0.3";
+    lbl.style.pointerEvents = "none";
+    lbl.textContent = "★ CAPITAL";
+    svg.appendChild(lbl);
   }
 
   // ==========================================
@@ -765,9 +886,11 @@
       correctAnswer = q.name; field = "name";
     }
 
-    // Highlight country on map for capital questions
+    // Zoom to country + highlight for capital questions
     if (q.mode === "capital") {
       document.querySelector(`.eu-country[data-iso="${q.iso}"]`)?.classList.add("hover");
+      zoomToCountry(q.iso, 60);
+      showCapitalDot(q.iso);
     }
 
     const opts = generateOptions(correctAnswer, field);
@@ -809,7 +932,7 @@
       addXP(xp);
       showFeedback(true);
       updateStat(q.iso, true);
-      if (S.streak % 5 === 0) confetti();
+      if (S.streak % 5 === 0) fireConfetti();
     } else {
       S.streak = 0;
       btn.classList.add("wrong");
@@ -833,10 +956,14 @@
   function finishGame() {
     S.playing = false;
     stopTimer();
+    resetZoom();
     document.getElementById("game-hud").classList.remove("show");
     document.getElementById("hud-prompt").classList.remove("show");
     document.getElementById("mc-overlay").classList.remove("show");
     document.getElementById("progress-bar").style.display = "none";
+    // Restore labels
+    const labels = document.getElementById("map-labels");
+    if (labels) labels.style.display = "";
     recolourMap();
 
     const total = S.queue.length;
@@ -851,7 +978,7 @@
       : ["Keep Practising!","Try Again!"];
     document.getElementById("end-title").textContent = titles[Math.floor(Math.random()*titles.length)];
 
-    if (pct >= 90) { addXP(50); document.getElementById("end-xp").textContent = "+50 Bonus XP!"; confetti(); }
+    if (pct >= 90) { addXP(50); document.getElementById("end-xp").textContent = "+50 Bonus XP!"; fireConfetti(); }
     else if (pct >= 70) { addXP(20); document.getElementById("end-xp").textContent = "+20 Bonus XP!"; }
     else { document.getElementById("end-xp").textContent = ""; }
 
@@ -868,7 +995,11 @@
 
   function endGame() {
     document.getElementById("end-overlay").classList.remove("show");
+    resetZoom();
     recolourMap();
+    // Restore labels
+    const labels = document.getElementById("map-labels");
+    if (labels) labels.style.display = "";
   }
 
   // ==========================================
@@ -892,8 +1023,9 @@
   // STATS
   // ==========================================
   function updateStat(iso, correct) {
-    const s = S.stats[iso] || {attempts:0,correct:0,streak:0};
+    const s = S.stats[iso] || {attempts:0,correct:0,streak:0,lastSeen:0};
     s.attempts++;
+    s.lastSeen = Date.now();
     if (correct) { s.correct++; s.streak++; } else { s.streak = 0; }
     S.stats[iso] = s;
     localStorage.setItem(STORAGE+"stats", JSON.stringify(S.stats));
@@ -961,7 +1093,7 @@
     S.xp += n;
     localStorage.setItem(STORAGE+"xp", S.xp);
     updateXP();
-    if (Math.floor(S.xp/100)+1 > oldLvl) confetti();
+    if (Math.floor(S.xp/100)+1 > oldLvl) fireConfetti();
   }
   function updateXP() {
     const lvl = Math.floor(S.xp/100)+1;
@@ -976,7 +1108,7 @@
   // ==========================================
   const FB = {
     "":{y:["Brilliant!","Nailed it!","Superb!"],n:["Not quite!","Keep going!"]},
-    agent:{y:["Intel confirmed!","Target acquired!","Mission success!"],n:["Intel compromised!","Regroup!"]},
+    agent:{y:["SIGNAL ACQUIRED","TARGET LOCATED","INTEL VERIFIED","ASSET CONFIRMED"],n:["SIGNAL LOST","COMPROMISED","REACQUIRE TARGET"]},
     vintage:{y:["Excellent!","Well charted!","Bravo!"],n:["Consult the atlas!","Review your maps!"]},
     pixel:{y:["EPIC LOOT!","CRITICAL HIT!","+1 KNOWLEDGE!"],n:["TRY AGAIN!","RESPAWN!"]}
   };
@@ -1000,8 +1132,8 @@
     } catch(e){}
   }
 
-  function confetti() {
-    const c = {"":['#2563eb','#f59e0b','#10b981'],agent:['#dc2626','#111','#fff'],vintage:['#92400e','#065f46','#fef3c7'],pixel:['#7c3aed','#06b6d4','#fff']};
+  function fireConfetti() {
+    const c = {"":['#2563eb','#f59e0b','#10b981'],agent:['#00ff41','#003300','#66ff66'],vintage:['#92400e','#065f46','#fef3c7'],pixel:['#7c3aed','#06b6d4','#fff']};
     window.confetti({particleCount:100,spread:60,origin:{y:.5},colors:c[S.theme]||c[""]});
   }
 
