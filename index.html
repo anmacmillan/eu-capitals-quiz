@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>Euro Quest: Capital Explorer! 🇪🇺</title>
+    <title>Euro Quest: Capital Explorer!</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Spectral:wght@400;700;800&family=Luckiest+Guy&family=VT323&display=swap"
         rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            /* Explorer Theme */
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --primary-light: #60a5fa;
@@ -32,7 +31,6 @@
             --xp-bar: #2563eb;
         }
 
-        /* Secret Agent Theme */
         [data-theme="agent"] {
             --primary: #18181b;
             --primary-dark: #09090b;
@@ -49,7 +47,6 @@
             --shadow: 0 0 30px rgba(220, 38, 38, 0.15);
         }
 
-        /* Vintage Map Theme */
         [data-theme="vintage"] {
             --primary: #92400e;
             --primary-dark: #78350f;
@@ -66,7 +63,6 @@
             --shadow: 0 8px 25px rgba(120, 53, 15, 0.15);
         }
 
-        /* Pixel Theme */
         [data-theme="pixel"] {
             --primary: #7c3aed;
             --primary-dark: #6d28d9;
@@ -84,13 +80,7 @@
             --shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
         }
 
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-main);
@@ -111,20 +101,14 @@
                 radial-gradient(circle at 20% 50%, rgba(220, 38, 38, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.03) 0%, transparent 50%);
         }
-
-        [data-theme="vintage"] body {
-            background-image: url('https://www.transparenttextures.com/patterns/papyros.png');
-        }
-
-        [data-theme="pixel"] body {
-            background-image: url('https://www.transparenttextures.com/patterns/pixel-weave.png');
-        }
+        [data-theme="vintage"] body { background-image: url('https://www.transparenttextures.com/patterns/papyros.png'); }
+        [data-theme="pixel"] body { background-image: url('https://www.transparenttextures.com/patterns/pixel-weave.png'); }
 
         .container {
-            max-width: 700px;
+            max-width: 800px;
             width: 100%;
             margin: auto;
-            padding: 25px;
+            padding: 20px;
             background: var(--container-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
@@ -132,660 +116,218 @@
             position: relative;
             transition: all var(--transition);
         }
+        [data-theme="agent"] .container { border: 1px solid rgba(220, 38, 38, 0.3); }
+        [data-theme="pixel"] .container { border: 4px solid #1e1b4b; }
 
-        [data-theme="agent"] .container {
-            border: 1px solid rgba(220, 38, 38, 0.3);
-        }
+        header { text-align: center; margin-bottom: 12px; }
+        h1 { font-size: 2rem; font-weight: 900; color: var(--primary); text-shadow: 2px 2px 0 rgba(0,0,0,0.1); margin-bottom: 4px; }
+        [data-theme="vintage"] h1 { font-family: 'Spectral', serif; font-variant: small-caps; letter-spacing: 2px; }
+        [data-theme="pixel"] h1 { font-size: 2.5rem; text-transform: uppercase; }
+        h2 { font-size: 1.4rem; margin-bottom: 12px; color: var(--primary); }
 
-        [data-theme="pixel"] .container {
-            border: 4px solid #1e1b4b;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--primary);
-            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
-            margin-bottom: 5px;
-        }
-
-        [data-theme="vintage"] h1 {
-            font-family: 'Spectral', serif;
-            font-variant: small-caps;
-            letter-spacing: 2px;
-        }
-
-        [data-theme="pixel"] h1 {
-            font-size: 3rem;
-            text-transform: uppercase;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        /* Theme Switcher */
-        .theme-switcher {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
+        .theme-switcher { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
         .theme-btn {
-            padding: 8px 16px;
-            border-radius: 10px;
-            border: 2px solid transparent;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 800;
-            transition: all var(--transition);
-            background: var(--container-bg);
-            box-shadow: var(--shadow);
-            color: var(--text-main);
+            padding: 6px 14px; border-radius: 10px; border: 2px solid transparent;
+            cursor: pointer; font-size: 0.9rem; font-weight: 800;
+            transition: all var(--transition); background: var(--container-bg);
+            box-shadow: var(--shadow); color: var(--text-main);
         }
-
-        .theme-btn:hover {
-            transform: translateY(-3px);
-        }
-
-        .theme-btn.active {
-            border-color: var(--primary);
-            box-shadow: 0 0 12px var(--primary);
-            transform: scale(1.05);
-        }
-
-        .theme-btn[data-t="agent"] {
-            color: #dc2626;
-            background: #18181b;
-            border-color: #dc2626;
-        }
-
-        .theme-btn[data-t="vintage"] {
-            font-family: 'Spectral', serif;
-            color: #92400e;
-            background: #fef3c7;
-            border-color: #92400e;
-        }
-
-        .theme-btn[data-t="pixel"] {
-            font-family: 'VT323', monospace;
-            color: #7c3aed;
-            background: #ddd6fe;
-            border-color: #7c3aed;
-        }
+        .theme-btn.active { border-color: var(--primary); box-shadow: 0 0 12px var(--primary); transform: scale(1.05); }
+        .theme-btn[data-t="agent"] { color: #dc2626; background: #18181b; border-color: #dc2626; }
+        .theme-btn[data-t="vintage"] { font-family: 'Spectral', serif; color: #92400e; background: #fef3c7; border-color: #92400e; }
+        .theme-btn[data-t="pixel"] { font-family: 'VT323', monospace; color: #7c3aed; background: #ddd6fe; border-color: #7c3aed; }
 
         /* XP Bar */
         .xp-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 35px;
-            background: rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            padding: 0 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 35px;
+            background: rgba(0,0,0,0.15); backdrop-filter: blur(10px); z-index: 100;
+            display: flex; align-items: center; padding: 0 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
+        .xp-bar-outer { flex-grow: 1; height: 14px; background: #333; border-radius: 7px; overflow: hidden; margin: 0 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
+        .xp-bar-inner { height: 100%; width: 0%; background: var(--xp-bar); transition: width 0.5s ease-out; box-shadow: 0 0 10px var(--xp-bar); }
+        .level-text { font-weight: 900; font-size: 0.9rem; color: var(--xp-bar); min-width: 65px; text-align: center; }
 
-        .xp-bar-outer {
-            flex-grow: 1;
-            height: 14px;
-            background: #333;
-            border-radius: 7px;
-            overflow: hidden;
-            margin: 0 12px;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .xp-bar-inner {
-            height: 100%;
-            width: 0%;
-            background: var(--xp-bar);
-            transition: width 0.5s ease-out;
-            box-shadow: 0 0 10px var(--xp-bar);
-        }
-
-        .level-text {
-            font-weight: 900;
-            font-size: 1rem;
-            color: var(--xp-bar);
-            min-width: 70px;
-            text-align: center;
-        }
-
-        /* Screens */
-        .screen {
-            display: none;
-            text-align: center;
-        }
-
-        .screen.active {
-            display: block;
-            animation: slideUp 0.4s ease;
-        }
+        .screen { display: none; text-align: center; }
+        .screen.active { display: block; animation: slideUp 0.4s ease; }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(25px) scale(0.97);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(25px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* Buttons */
         .btn {
-            padding: 14px 28px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            font-family: inherit;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: all var(--transition);
-            color: #fff;
+            padding: 12px 24px; font-size: 1rem; font-weight: 800; font-family: inherit;
+            border: none; border-radius: var(--radius); cursor: pointer;
+            transition: all var(--transition); color: #fff;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            box-shadow: 0 4px 0 var(--primary-dark), 0 8px 15px rgba(0, 0, 0, 0.1);
-            margin: 8px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            -webkit-user-select: none;
-            user-select: none;
+            box-shadow: 0 4px 0 var(--primary-dark), 0 8px 15px rgba(0,0,0,0.1);
+            margin: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            -webkit-user-select: none; user-select: none;
         }
+        .btn:active { transform: translateY(1px); box-shadow: 0 2px 0 var(--primary-dark), 0 4px 8px rgba(0,0,0,0.1); }
+        .btn-secondary { background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); box-shadow: 0 4px 0 var(--secondary-dark), 0 8px 15px rgba(0,0,0,0.1); }
+        .btn-secondary:active { box-shadow: 0 2px 0 var(--secondary-dark), 0 4px 8px rgba(0,0,0,0.1); }
+        .btn-success { background: linear-gradient(135deg, var(--success), #059669); box-shadow: 0 4px 0 #059669, 0 8px 15px rgba(0,0,0,0.1); }
+        [data-theme="pixel"] .btn { border: 4px solid #1e1b4b; box-shadow: 4px 4px 0 #1e1b4b; border-radius: 0; }
+        [data-theme="pixel"] .btn:active { transform: translate(2px,2px); box-shadow: 0 0 0 #1e1b4b; }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 0 var(--primary-dark), 0 12px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 0 var(--primary-dark), 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-            box-shadow: 0 4px 0 var(--secondary-dark), 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-secondary:hover {
-            box-shadow: 0 7px 0 var(--secondary-dark), 0 12px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .btn-secondary:active {
-            box-shadow: 0 2px 0 var(--secondary-dark), 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #059669);
-            box-shadow: 0 4px 0 #059669, 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        [data-theme="pixel"] .btn {
-            border: 4px solid #1e1b4b;
-            box-shadow: 4px 4px 0 #1e1b4b;
-            border-radius: 0;
-        }
-
-        [data-theme="pixel"] .btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0 #1e1b4b;
-        }
-
-        [data-theme="pixel"] .btn:active {
-            transform: translate(2px, 2px);
-            box-shadow: 0 0 0 #1e1b4b;
-        }
-
-        /* Mode Selection Cards */
-        .mode-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 20px 0;
-        }
-
+        .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
         .mode-card {
-            padding: 20px 15px;
-            border-radius: var(--radius);
-            background: var(--container-bg);
-            border: 3px solid rgba(0, 0, 0, 0.08);
-            cursor: pointer;
-            transition: all var(--transition);
-            text-align: center;
+            padding: 16px 12px; border-radius: var(--radius); background: var(--container-bg);
+            border: 3px solid rgba(0,0,0,0.08); cursor: pointer;
+            transition: all var(--transition); text-align: center;
         }
+        .mode-card.selected { border-color: var(--primary); background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(37,99,235,0.02)); box-shadow: 0 0 15px rgba(37,99,235,0.15); }
+        [data-theme="agent"] .mode-card.selected { background: linear-gradient(135deg, rgba(220,38,38,0.1), transparent); box-shadow: 0 0 15px rgba(220,38,38,0.15); }
+        .mode-icon { font-size: 2.2rem; margin-bottom: 6px; }
+        .mode-label { font-weight: 800; font-size: 0.95rem; }
+        .mode-desc { font-size: 0.75rem; color: var(--text-light); margin-top: 3px; }
 
-        .mode-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .mode-card.selected {
-            border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(37, 99, 235, 0.02));
-            box-shadow: 0 0 15px rgba(37, 99, 235, 0.15);
-        }
-
-        [data-theme="agent"] .mode-card.selected {
-            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), transparent);
-            box-shadow: 0 0 15px rgba(220, 38, 38, 0.15);
-        }
-
-        .mode-icon {
-            font-size: 2.5rem;
-            margin-bottom: 8px;
-        }
-
-        .mode-label {
-            font-weight: 800;
-            font-size: 1rem;
-        }
-
-        .mode-desc {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-top: 4px;
-        }
-
-        /* Region selection pills */
-        .region-pills {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            margin: 15px 0;
-        }
-
+        .region-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 12px 0; }
         .region-pill {
-            padding: 8px 18px;
-            border-radius: 50px;
-            border: 2px solid var(--text-light);
-            background: transparent;
-            color: var(--text-main);
-            font-weight: 700;
-            font-size: 0.9rem;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all var(--transition);
+            padding: 6px 14px; border-radius: 50px; border: 2px solid var(--text-light);
+            background: transparent; color: var(--text-main); font-weight: 700;
+            font-size: 0.85rem; font-family: inherit; cursor: pointer; transition: all var(--transition);
         }
+        .region-pill.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,0.3); }
 
-        .region-pill:hover {
-            border-color: var(--primary);
-        }
+        .question-card { margin: 15px 0; padding: 20px 15px; background: rgba(0,0,0,0.03); border-radius: var(--radius); position: relative; }
+        [data-theme="agent"] .question-card { background: rgba(220,38,38,0.05); border: 1px solid rgba(220,38,38,0.2); }
+        [data-theme="vintage"] .question-card { background: url('https://www.transparenttextures.com/patterns/papyros.png'); border: 2px solid var(--primary); }
+        .question-flag { font-size: 3.5rem; margin-bottom: 8px; }
+        .question-text { font-size: 1.5rem; font-weight: 900; margin-bottom: 4px; }
+        .question-sub { font-size: 0.95rem; color: var(--text-light); font-weight: 600; }
 
-        .region-pill.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-        }
-
-        /* Question Card */
-        .question-card {
-            margin: 25px 0;
-            padding: 30px 20px;
-            background: rgba(0, 0, 0, 0.03);
-            border-radius: var(--radius);
-            position: relative;
-        }
-
-        [data-theme="agent"] .question-card {
-            background: rgba(220, 38, 38, 0.05);
-            border: 1px solid rgba(220, 38, 38, 0.2);
-        }
-
-        [data-theme="vintage"] .question-card {
-            background: url('https://www.transparenttextures.com/patterns/papyros.png');
-            border: 2px solid var(--primary);
-        }
-
-        .question-flag {
-            font-size: 4rem;
-            margin-bottom: 10px;
-        }
-
-        .question-text {
-            font-size: 1.6rem;
-            font-weight: 900;
-            margin-bottom: 5px;
-        }
-
-        .question-sub {
-            font-size: 1rem;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        /* Multiple Choice Options */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 15px 0; }
         .option-btn {
-            padding: 16px 12px;
-            border-radius: var(--radius);
-            border: 3px solid rgba(0, 0, 0, 0.1);
-            background: var(--container-bg);
-            color: var(--text-main);
-            font-size: 1.1rem;
-            font-weight: 700;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            -webkit-user-select: none;
-            user-select: none;
+            padding: 14px 10px; border-radius: var(--radius); border: 3px solid rgba(0,0,0,0.1);
+            background: var(--container-bg); color: var(--text-main); font-size: 1rem;
+            font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s ease;
+            -webkit-user-select: none; user-select: none;
         }
+        .option-btn:active { transform: translateY(1px); }
+        .option-btn.correct { background: var(--success); border-color: var(--success); color: #fff; animation: pulse 0.3s ease; }
+        .option-btn.wrong { background: var(--danger); border-color: var(--danger); color: #fff; animation: shake 0.3s ease; }
+        .option-btn.reveal { border-color: var(--success); box-shadow: 0 0 10px rgba(16,185,129,0.3); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.6; }
+        [data-theme="pixel"] .option-btn { border: 3px solid #1e1b4b; border-radius: 0; }
 
-        .option-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
+        .progress-bar { height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
+        .progress-fill { height: 100%; background: var(--primary); transition: width 0.4s ease; border-radius: 4px; }
 
-        .option-btn:active {
-            transform: translateY(1px);
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin: 12px 0; max-height: 350px; overflow-y: auto; padding: 5px; }
+        .stat-card { padding: 8px; border-radius: 10px; text-align: center; font-size: 0.8rem; font-weight: 700; position: relative; transition: all 0.2s ease; }
+        .stat-flag { font-size: 1.4rem; }
+        .stat-name { font-size: 0.7rem; margin-top: 2px; }
+        .stat-capital { font-size: 0.6rem; color: var(--text-light); }
+        .box-mastered { background: #d1fae5; color: #065f46; border: 2px solid #10b981; }
+        .box-good { background: #dbeafe; color: #1e40af; border: 2px solid #60a5fa; }
+        .box-learning { background: #fef3c7; color: #92400e; border: 2px solid #f59e0b; }
+        .box-new { background: #f3f4f6; color: #6b7280; border: 2px solid #d1d5db; }
+        .box-struggling { background: #fee2e2; color: #991b1b; border: 2px solid #ef4444; }
 
-        .option-btn.correct {
-            background: var(--success);
-            border-color: var(--success);
-            color: #fff;
-            animation: pulse 0.3s ease;
-        }
+        .summary-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
+        .summary-stat { padding: 12px; border-radius: var(--radius); background: rgba(0,0,0,0.03); }
+        .summary-stat .big { font-size: 1.8rem; font-weight: 900; color: var(--primary); }
+        .summary-stat .label { font-size: 0.75rem; color: var(--text-light); font-weight: 600; }
 
-        .option-btn.wrong {
-            background: var(--danger);
-            border-color: var(--danger);
-            color: #fff;
-            animation: shake 0.3s ease;
-        }
-
-        .option-btn.reveal {
-            border-color: var(--success);
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
-        }
-
-        .option-btn.disabled {
-            pointer-events: none;
-            opacity: 0.6;
-        }
-
-        [data-theme="pixel"] .option-btn {
-            border: 3px solid #1e1b4b;
-            border-radius: 0;
-        }
-
-        /* Type input */
-        .type-input {
-            font-size: 1.8rem;
-            font-weight: 900;
-            font-family: inherit;
-            width: 280px;
-            max-width: 90%;
-            text-align: center;
-            padding: 16px;
-            border: 4px solid var(--secondary);
-            border-radius: var(--radius);
-            background: var(--container-bg);
-            color: var(--text-main);
-            outline: none;
-            transition: all var(--transition);
-        }
-
-        .type-input:focus {
-            border-color: var(--primary);
-            transform: scale(1.03);
-            box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
-        }
-
-        [data-theme="pixel"] .type-input {
-            border-radius: 0;
-            border: 4px solid #1e1b4b;
-        }
-
-        /* Progress bar in game */
-        .progress-bar {
-            height: 8px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            transition: width 0.4s ease;
-            border-radius: 4px;
-        }
-
-        /* Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 8px;
-            margin: 15px 0;
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 5px;
-        }
-
-        .stat-card {
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-            position: relative;
-            transition: all 0.2s ease;
-        }
-
-        .stat-card:hover {
-            transform: scale(1.05);
-        }
-
-        .stat-flag {
-            font-size: 1.5rem;
-        }
-
-        .stat-name {
-            font-size: 0.75rem;
-            margin-top: 2px;
-        }
-
-        .stat-capital {
-            font-size: 0.65rem;
-            color: var(--text-light);
-        }
-
-        .box-mastered {
-            background: #d1fae5;
-            color: #065f46;
-            border: 2px solid #10b981;
-        }
-
-        .box-good {
-            background: #dbeafe;
-            color: #1e40af;
-            border: 2px solid #60a5fa;
-        }
-
-        .box-learning {
-            background: #fef3c7;
-            color: #92400e;
-            border: 2px solid #f59e0b;
-        }
-
-        .box-new {
-            background: #f3f4f6;
-            color: #6b7280;
-            border: 2px solid #d1d5db;
-        }
-
-        .box-struggling {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 2px solid #ef4444;
-        }
-
-        /* Summary stats */
-        .summary-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 20px 0;
-        }
-
-        .summary-stat {
-            padding: 15px;
-            border-radius: var(--radius);
-            background: rgba(0, 0, 0, 0.03);
-        }
-
-        .summary-stat .big {
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--primary);
-        }
-
-        .summary-stat .label {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        /* Feedback Overlay */
         .feedback-overlay {
-            position: fixed;
-            top: 40%;
-            left: 50%;
+            position: fixed; top: 40%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            font-size: 3rem;
-            font-weight: 900;
-            pointer-events: none;
-            z-index: 1000;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            font-size: 2.5rem; font-weight: 900; pointer-events: none; z-index: 1000;
+            text-shadow: 0 0 20px rgba(0,0,0,0.2);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-            white-space: nowrap;
+            text-align: center; white-space: nowrap;
         }
+        .feedback-overlay.show { transform: translate(-50%, -50%) scale(1); }
 
-        .feedback-overlay.show {
-            transform: translate(-50%, -50%) scale(1);
+        .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: 700; }
+        .streak-badge { font-size: 1rem; color: var(--primary); }
+        .timer-badge { font-size: 0.9rem; color: var(--text-light); }
+
+        .learn-card { padding: 20px; margin: 12px 0; border-radius: var(--radius); background: rgba(0,0,0,0.03); border: 2px solid rgba(0,0,0,0.05); }
+        .learn-flag { font-size: 4.5rem; }
+        .learn-country { font-size: 1.6rem; font-weight: 900; margin: 6px 0 3px; }
+        .learn-capital { font-size: 1.2rem; color: var(--primary); font-weight: 700; }
+        .learn-nav { display: flex; justify-content: center; gap: 12px; margin-top: 12px; }
+        .counter-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; background: var(--primary); color: #fff; font-size: 0.8rem; font-weight: 700; }
+
+        /* SVG Map Styles */
+        .map-container { width: 100%; margin: 10px 0; position: relative; }
+        .map-container svg { width: 100%; height: auto; border-radius: var(--radius); display: block; }
+        .eu-country { cursor: pointer; transition: opacity 0.2s; stroke: #fff; stroke-width: 0.8; }
+        .eu-country:active { opacity: 0.7; }
+        .non-eu-country { fill: #ccc; stroke: #bbb; stroke-width: 0.5; pointer-events: none; }
+        .country-label { font-size: 6px; font-weight: 700; fill: #333; pointer-events: none; text-anchor: middle; dominant-baseline: central; }
+        .capital-dot { fill: #333; pointer-events: none; }
+        .sea-label { font-size: 8px; fill: #7ba7cc; font-style: italic; pointer-events: none; text-anchor: middle; font-weight: 400; }
+
+        /* Map info panel */
+        .map-info-panel {
+            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+            background: var(--container-bg); border-radius: var(--radius); padding: 12px 20px;
+            box-shadow: var(--shadow); border: 2px solid var(--primary);
+            text-align: center; min-width: 200px; z-index: 10;
+            display: none; animation: slideUp 0.3s ease;
         }
+        .map-info-panel.visible { display: block; }
+        .map-info-flag { font-size: 2.5rem; }
+        .map-info-name { font-size: 1.2rem; font-weight: 900; }
+        .map-info-capital { font-size: 1rem; color: var(--primary); font-weight: 700; }
 
-        /* Streak display */
-        .game-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            font-weight: 700;
+        /* Map quiz prompt */
+        .map-quiz-prompt {
+            text-align: center; padding: 12px; margin-bottom: 8px;
+            background: rgba(0,0,0,0.03); border-radius: var(--radius);
         }
+        .map-quiz-prompt .prompt-flag { font-size: 3rem; }
+        .map-quiz-prompt .prompt-text { font-size: 1.4rem; font-weight: 900; margin-top: 4px; }
 
-        .streak-badge {
-            font-size: 1.1rem;
-            color: var(--primary);
+        /* Study mode toggle */
+        .study-toggle { display: flex; justify-content: center; gap: 0; margin-bottom: 12px; }
+        .study-toggle-btn {
+            padding: 8px 20px; font-size: 0.9rem; font-weight: 800; font-family: inherit;
+            border: 2px solid var(--primary); background: transparent; color: var(--primary);
+            cursor: pointer; transition: all 0.2s;
         }
+        .study-toggle-btn:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+        .study-toggle-btn:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+        .study-toggle-btn.active { background: var(--primary); color: #fff; }
 
-        .timer-badge {
-            font-size: 1rem;
-            color: var(--text-light);
+        /* Stats map legend */
+        .map-legend {
+            display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+            font-size: 0.75rem; margin-top: 8px; font-weight: 600;
         }
+        .map-legend span { display: flex; align-items: center; gap: 3px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
-        /* Learn mode */
-        .learn-card {
-            padding: 25px;
-            margin: 15px 0;
-            border-radius: var(--radius);
-            background: rgba(0, 0, 0, 0.03);
-            border: 2px solid rgba(0, 0, 0, 0.05);
-        }
+        /* Highlight effects on map */
+        .map-highlight-correct { fill: #10b981 !important; transition: fill 0.3s; }
+        .map-highlight-wrong { fill: #ef4444 !important; transition: fill 0.3s; }
+        .map-highlight-reveal { fill: #10b981 !important; stroke: #fff !important; stroke-width: 3 !important; }
 
-        .learn-flag {
-            font-size: 5rem;
-        }
-
-        .learn-country {
-            font-size: 1.8rem;
-            font-weight: 900;
-            margin: 8px 0 4px;
-        }
-
-        .learn-capital {
-            font-size: 1.3rem;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .learn-nav {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .counter-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            background: var(--primary);
-            color: #fff;
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
-
-        /* Responsive */
         @media (max-width: 600px) {
-            h1 { font-size: 1.7rem; }
-            .mode-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-            .mode-card { padding: 15px 10px; }
-            .mode-icon { font-size: 2rem; }
-            .question-flag { font-size: 3rem; }
-            .question-text { font-size: 1.3rem; }
-            .options-grid { gap: 8px; }
-            .option-btn { padding: 14px 10px; font-size: 1rem; }
-            .type-input { font-size: 1.4rem; width: 240px; }
-            .summary-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-            .summary-stat .big { font-size: 1.5rem; }
-            .stats-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
-            .learn-flag { font-size: 4rem; }
+            h1 { font-size: 1.6rem; }
+            .mode-grid { gap: 8px; }
+            .mode-card { padding: 12px 8px; }
+            .mode-icon { font-size: 1.8rem; }
+            .question-flag { font-size: 2.8rem; }
+            .question-text { font-size: 1.2rem; }
+            .option-btn { padding: 12px 8px; font-size: 0.9rem; }
+            .summary-stats { gap: 6px; }
+            .summary-stat .big { font-size: 1.4rem; }
+            .stats-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+            .learn-flag { font-size: 3.5rem; }
+            .country-label { font-size: 5px; }
         }
     </style>
 </head>
 
 <body>
-
     <div class="theme-switcher">
         <button class="theme-btn active" data-t="explorer" onclick="setTheme('explorer')">Explorer</button>
         <button class="theme-btn" data-t="agent" onclick="setTheme('agent')">Secret Agent</button>
@@ -802,31 +344,34 @@
         <!-- START SCREEN -->
         <section id="start-screen" class="screen active">
             <h2>Choose Your Mission</h2>
-
             <div class="mode-grid">
                 <div class="mode-card selected" data-mode="capital" onclick="selectMode(this)">
-                    <div class="mode-icon">🏛️</div>
+                    <div class="mode-icon">&#127963;</div>
                     <div class="mode-label">Name the Capital</div>
-                    <div class="mode-desc">Country → Capital</div>
+                    <div class="mode-desc">Country -> Capital</div>
                 </div>
                 <div class="mode-card" data-mode="country" onclick="selectMode(this)">
-                    <div class="mode-icon">🗺️</div>
+                    <div class="mode-icon">&#128506;</div>
                     <div class="mode-label">Name the Country</div>
-                    <div class="mode-desc">Capital → Country</div>
+                    <div class="mode-desc">Capital -> Country</div>
                 </div>
                 <div class="mode-card" data-mode="flag" onclick="selectMode(this)">
-                    <div class="mode-icon">🏳️</div>
+                    <div class="mode-icon">&#127988;</div>
                     <div class="mode-label">Flag Challenge</div>
-                    <div class="mode-desc">Flag → Country</div>
+                    <div class="mode-desc">Flag -> Country</div>
+                </div>
+                <div class="mode-card" data-mode="mapquiz" onclick="selectMode(this)">
+                    <div class="mode-icon">&#127758;</div>
+                    <div class="mode-label">Map Quiz</div>
+                    <div class="mode-desc">Find it on the map!</div>
                 </div>
                 <div class="mode-card" data-mode="mix" onclick="selectMode(this)">
-                    <div class="mode-icon">🎲</div>
+                    <div class="mode-icon">&#127922;</div>
                     <div class="mode-label">Mix It Up!</div>
                     <div class="mode-desc">All question types</div>
                 </div>
             </div>
-
-            <p style="font-weight: 700; margin-bottom: 8px;">Region</p>
+            <p style="font-weight:700;margin-bottom:6px;">Region</p>
             <div class="region-pills">
                 <button class="region-pill active" data-region="all" onclick="selectRegion(this)">All EU</button>
                 <button class="region-pill" data-region="western" onclick="selectRegion(this)">Western</button>
@@ -835,11 +380,10 @@
                 <button class="region-pill" data-region="southern" onclick="selectRegion(this)">Southern</button>
                 <button class="region-pill" data-region="weak" onclick="selectRegion(this)">Weak Spots</button>
             </div>
-
-            <div style="margin-top: 10px;">
+            <div style="margin-top:8px;">
                 <button onclick="startGame()" class="btn">Start Quest!</button>
             </div>
-            <div style="margin-top: 8px;">
+            <div style="margin-top:6px;">
                 <button onclick="showScreen('learn')" class="btn btn-secondary">Study Mode</button>
                 <button onclick="showScreen('stats')" class="btn btn-secondary">My Progress</button>
             </div>
@@ -847,31 +391,44 @@
 
         <!-- LEARN SCREEN -->
         <section id="learn-screen" class="screen">
-            <button onclick="showScreen('start')" class="btn btn-secondary" style="margin-bottom: 15px;">Back</button>
-            <h2>Study Cards</h2>
-            <div class="counter-badge" id="learn-counter">1 / 27</div>
-            <div class="learn-card" id="learn-card">
-                <div class="learn-flag" id="learn-flag"></div>
-                <div class="learn-country" id="learn-country"></div>
-                <div class="learn-capital" id="learn-capital" style="opacity: 0; cursor: pointer;" onclick="revealCapital()">Tap to reveal</div>
+            <button onclick="showScreen('start')" class="btn btn-secondary" style="margin-bottom:10px;">Back</button>
+            <h2>Study Mode</h2>
+            <div class="study-toggle">
+                <button class="study-toggle-btn active" onclick="setStudyView('map')">Map</button>
+                <button class="study-toggle-btn" onclick="setStudyView('cards')">Flashcards</button>
             </div>
-            <div class="learn-nav">
-                <button onclick="learnPrev()" class="btn">Previous</button>
-                <button onclick="learnNext()" class="btn btn-secondary">Next</button>
+
+            <!-- Map study view -->
+            <div id="study-map-view">
+                <div class="map-container" id="study-map-container"></div>
             </div>
-            <div style="margin-top: 10px;">
-                <button onclick="shuffleLearn()" class="btn btn-success" style="font-size: 0.9rem; padding: 10px 20px;">Shuffle</button>
+
+            <!-- Flashcard study view -->
+            <div id="study-cards-view" style="display:none;">
+                <div class="counter-badge" id="learn-counter">1 / 27</div>
+                <div class="learn-card" id="learn-card">
+                    <div class="learn-flag" id="learn-flag"></div>
+                    <div class="learn-country" id="learn-country"></div>
+                    <div class="learn-capital" id="learn-capital" style="opacity:0;cursor:pointer;" onclick="revealCapital()">Tap to reveal</div>
+                </div>
+                <div class="learn-nav">
+                    <button onclick="learnPrev()" class="btn">Previous</button>
+                    <button onclick="learnNext()" class="btn btn-secondary">Next</button>
+                </div>
+                <div style="margin-top:8px;">
+                    <button onclick="shuffleLearn()" class="btn btn-success" style="font-size:0.85rem;padding:8px 16px;">Shuffle</button>
+                </div>
             </div>
         </section>
 
         <!-- GAME SCREEN -->
         <section id="game-screen" class="screen">
             <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                <div class="progress-fill" id="progress-fill" style="width:0%"></div>
             </div>
             <div class="game-header">
                 <div class="streak-badge" id="streak-display">Streak: 0</div>
-                <div id="q-counter" style="font-weight: 800; color: var(--primary);"></div>
+                <div id="q-counter" style="font-weight:800;color:var(--primary);"></div>
                 <div class="timer-badge" id="timer-display">0s</div>
             </div>
 
@@ -881,728 +438,1107 @@
                 <div class="question-sub" id="q-sub"></div>
             </div>
 
-            <!-- Multiple choice options -->
             <div class="options-grid" id="options-grid"></div>
 
-            <!-- Type answer -->
-            <form id="type-form" autocomplete="off" style="display: none;">
-                <input type="text" id="type-input" class="type-input" placeholder="Type answer..." autocomplete="off" autocapitalize="words" />
-                <div style="margin-top: 12px;">
-                    <button type="submit" class="btn">Check!</button>
-                </div>
-            </form>
+            <!-- Map quiz area -->
+            <div id="map-quiz-area" style="display:none;">
+                <div class="map-container" id="quiz-map-container"></div>
+            </div>
         </section>
 
         <!-- END SCREEN -->
         <section id="end-screen" class="screen">
             <h2 id="end-title">Quest Complete!</h2>
             <div class="summary-stats">
-                <div class="summary-stat">
-                    <div class="big" id="end-correct">0</div>
-                    <div class="label">Correct</div>
-                </div>
-                <div class="summary-stat">
-                    <div class="big" id="end-accuracy">0%</div>
-                    <div class="label">Accuracy</div>
-                </div>
-                <div class="summary-stat">
-                    <div class="big" id="end-streak">0</div>
-                    <div class="label">Best Streak</div>
-                </div>
+                <div class="summary-stat"><div class="big" id="end-correct">0</div><div class="label">Correct</div></div>
+                <div class="summary-stat"><div class="big" id="end-accuracy">0%</div><div class="label">Accuracy</div></div>
+                <div class="summary-stat"><div class="big" id="end-streak">0</div><div class="label">Best Streak</div></div>
             </div>
-            <div id="xp-gain" style="font-size: 1.8rem; font-weight: 900; color: var(--success); margin: 15px 0;"></div>
-            <div id="end-mistakes" style="margin: 15px 0; text-align: left;"></div>
+            <div id="xp-gain" style="font-size:1.6rem;font-weight:900;color:var(--success);margin:12px 0;"></div>
+            <div id="end-mistakes" style="margin:12px 0;text-align:left;"></div>
             <button onclick="showScreen('start')" class="btn">Play Again!</button>
             <button onclick="showScreen('stats')" class="btn btn-secondary">My Progress</button>
         </section>
 
         <!-- STATS SCREEN -->
         <section id="stats-screen" class="screen">
-            <button onclick="showScreen('start')" class="btn btn-secondary" style="margin-bottom: 15px;">Back</button>
+            <button onclick="showScreen('start')" class="btn btn-secondary" style="margin-bottom:10px;">Back</button>
             <h2>Your Knowledge Map</h2>
-            <div class="summary-stats" style="margin-bottom: 15px;">
-                <div class="summary-stat">
-                    <div class="big" id="stats-mastered">0</div>
-                    <div class="label">Mastered</div>
-                </div>
-                <div class="summary-stat">
-                    <div class="big" id="stats-learning">0</div>
-                    <div class="label">Learning</div>
-                </div>
-                <div class="summary-stat">
-                    <div class="big" id="stats-new">0</div>
-                    <div class="label">Not Started</div>
+            <div class="study-toggle" style="margin-bottom:10px;">
+                <button class="study-toggle-btn active" onclick="setStatsView('map')">Map</button>
+                <button class="study-toggle-btn" onclick="setStatsView('grid')">Grid</button>
+            </div>
+
+            <div id="stats-map-view">
+                <div class="map-container" id="stats-map-container"></div>
+                <div class="map-legend">
+                    <span><span class="legend-dot" style="background:#10b981;"></span> Mastered</span>
+                    <span><span class="legend-dot" style="background:#60a5fa;"></span> Good</span>
+                    <span><span class="legend-dot" style="background:#f59e0b;"></span> Learning</span>
+                    <span><span class="legend-dot" style="background:#ef4444;"></span> Struggling</span>
+                    <span><span class="legend-dot" style="background:#d1d5db;"></span> New</span>
                 </div>
             </div>
-            <div id="stats-grid" class="stats-grid"></div>
-            <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; font-size: 0.8rem; margin-top: 15px; font-weight: 600;">
-                <span style="color: #065f46;">Mastered</span>
-                <span style="color: #1e40af;">Good</span>
-                <span style="color: #92400e;">Learning</span>
-                <span style="color: #991b1b;">Struggling</span>
-                <span style="color: #6b7280;">New</span>
+
+            <div id="stats-grid-view" style="display:none;">
+                <div class="summary-stats" style="margin-bottom:10px;">
+                    <div class="summary-stat"><div class="big" id="stats-mastered">0</div><div class="label">Mastered</div></div>
+                    <div class="summary-stat"><div class="big" id="stats-learning">0</div><div class="label">Learning</div></div>
+                    <div class="summary-stat"><div class="big" id="stats-new">0</div><div class="label">Not Started</div></div>
+                </div>
+                <div id="stats-grid" class="stats-grid"></div>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:0.75rem;margin-top:10px;font-weight:600;">
+                    <span style="color:#065f46;">Mastered</span>
+                    <span style="color:#1e40af;">Good</span>
+                    <span style="color:#92400e;">Learning</span>
+                    <span style="color:#991b1b;">Struggling</span>
+                    <span style="color:#6b7280;">New</span>
+                </div>
             </div>
-            <div style="margin-top: 15px;">
-                <button onclick="resetProgress()" class="btn" style="font-size: 0.85rem; padding: 10px 20px; background: var(--danger);">Reset Progress</button>
+            <div style="margin-top:12px;">
+                <button onclick="resetProgress()" class="btn" style="font-size:0.8rem;padding:8px 16px;background:var(--danger);">Reset Progress</button>
             </div>
         </section>
     </div>
 
-    <!-- XP Bar -->
     <div class="xp-container">
         <div class="level-text" id="level-display">LVL 1</div>
-        <div class="xp-bar-outer">
-            <div id="xp-bar-fill" class="xp-bar-inner"></div>
-        </div>
+        <div class="xp-bar-outer"><div id="xp-bar-fill" class="xp-bar-inner"></div></div>
         <div class="level-text" id="xp-text">0 / 100 XP</div>
     </div>
-
     <div id="feedback-overlay" class="feedback-overlay"></div>
 
     <script>
-        // ==========================================
-        // EU COUNTRIES DATA (27 member states)
-        // ==========================================
-        const EU_COUNTRIES = [
-            { country: "Austria", capital: "Vienna", flag: "\u{1F1E6}\u{1F1F9}", region: "western" },
-            { country: "Belgium", capital: "Brussels", flag: "\u{1F1E7}\u{1F1EA}", region: "western" },
-            { country: "Bulgaria", capital: "Sofia", flag: "\u{1F1E7}\u{1F1EC}", region: "eastern" },
-            { country: "Croatia", capital: "Zagreb", flag: "\u{1F1ED}\u{1F1F7}", region: "eastern" },
-            { country: "Cyprus", capital: "Nicosia", flag: "\u{1F1E8}\u{1F1FE}", region: "southern" },
-            { country: "Czech Republic", capital: "Prague", flag: "\u{1F1E8}\u{1F1FF}", region: "eastern" },
-            { country: "Denmark", capital: "Copenhagen", flag: "\u{1F1E9}\u{1F1F0}", region: "northern" },
-            { country: "Estonia", capital: "Tallinn", flag: "\u{1F1EA}\u{1F1EA}", region: "northern" },
-            { country: "Finland", capital: "Helsinki", flag: "\u{1F1EB}\u{1F1EE}", region: "northern" },
-            { country: "France", capital: "Paris", flag: "\u{1F1EB}\u{1F1F7}", region: "western" },
-            { country: "Germany", capital: "Berlin", flag: "\u{1F1E9}\u{1F1EA}", region: "western" },
-            { country: "Greece", capital: "Athens", flag: "\u{1F1EC}\u{1F1F7}", region: "southern" },
-            { country: "Hungary", capital: "Budapest", flag: "\u{1F1ED}\u{1F1FA}", region: "eastern" },
-            { country: "Ireland", capital: "Dublin", flag: "\u{1F1EE}\u{1F1EA}", region: "western" },
-            { country: "Italy", capital: "Rome", flag: "\u{1F1EE}\u{1F1F9}", region: "southern" },
-            { country: "Latvia", capital: "Riga", flag: "\u{1F1F1}\u{1F1FB}", region: "northern" },
-            { country: "Lithuania", capital: "Vilnius", flag: "\u{1F1F1}\u{1F1F9}", region: "northern" },
-            { country: "Luxembourg", capital: "Luxembourg City", flag: "\u{1F1F1}\u{1F1FA}", region: "western" },
-            { country: "Malta", capital: "Valletta", flag: "\u{1F1F2}\u{1F1F9}", region: "southern" },
-            { country: "Netherlands", capital: "Amsterdam", flag: "\u{1F1F3}\u{1F1F1}", region: "western" },
-            { country: "Poland", capital: "Warsaw", flag: "\u{1F1F5}\u{1F1F1}", region: "eastern" },
-            { country: "Portugal", capital: "Lisbon", flag: "\u{1F1F5}\u{1F1F9}", region: "southern" },
-            { country: "Romania", capital: "Bucharest", flag: "\u{1F1F7}\u{1F1F4}", region: "eastern" },
-            { country: "Slovakia", capital: "Bratislava", flag: "\u{1F1F8}\u{1F1F0}", region: "eastern" },
-            { country: "Slovenia", capital: "Ljubljana", flag: "\u{1F1F8}\u{1F1EE}", region: "eastern" },
-            { country: "Spain", capital: "Madrid", flag: "\u{1F1EA}\u{1F1F8}", region: "southern" },
-            { country: "Sweden", capital: "Stockholm", flag: "\u{1F1F8}\u{1F1EA}", region: "northern" }
+    // ==========================================
+    // EU COUNTRIES DATA
+    // ==========================================
+    const EU_COUNTRIES = [
+        { country: "Austria", capital: "Vienna", flag: "\u{1F1E6}\u{1F1F9}", region: "western" },
+        { country: "Belgium", capital: "Brussels", flag: "\u{1F1E7}\u{1F1EA}", region: "western" },
+        { country: "Bulgaria", capital: "Sofia", flag: "\u{1F1E7}\u{1F1EC}", region: "eastern" },
+        { country: "Croatia", capital: "Zagreb", flag: "\u{1F1ED}\u{1F1F7}", region: "eastern" },
+        { country: "Cyprus", capital: "Nicosia", flag: "\u{1F1E8}\u{1F1FE}", region: "southern" },
+        { country: "Czech Republic", capital: "Prague", flag: "\u{1F1E8}\u{1F1FF}", region: "eastern" },
+        { country: "Denmark", capital: "Copenhagen", flag: "\u{1F1E9}\u{1F1F0}", region: "northern" },
+        { country: "Estonia", capital: "Tallinn", flag: "\u{1F1EA}\u{1F1EA}", region: "northern" },
+        { country: "Finland", capital: "Helsinki", flag: "\u{1F1EB}\u{1F1EE}", region: "northern" },
+        { country: "France", capital: "Paris", flag: "\u{1F1EB}\u{1F1F7}", region: "western" },
+        { country: "Germany", capital: "Berlin", flag: "\u{1F1E9}\u{1F1EA}", region: "western" },
+        { country: "Greece", capital: "Athens", flag: "\u{1F1EC}\u{1F1F7}", region: "southern" },
+        { country: "Hungary", capital: "Budapest", flag: "\u{1F1ED}\u{1F1FA}", region: "eastern" },
+        { country: "Ireland", capital: "Dublin", flag: "\u{1F1EE}\u{1F1EA}", region: "western" },
+        { country: "Italy", capital: "Rome", flag: "\u{1F1EE}\u{1F1F9}", region: "southern" },
+        { country: "Latvia", capital: "Riga", flag: "\u{1F1F1}\u{1F1FB}", region: "northern" },
+        { country: "Lithuania", capital: "Vilnius", flag: "\u{1F1F1}\u{1F1F9}", region: "northern" },
+        { country: "Luxembourg", capital: "Luxembourg City", flag: "\u{1F1F1}\u{1F1FA}", region: "western" },
+        { country: "Malta", capital: "Valletta", flag: "\u{1F1F2}\u{1F1F9}", region: "southern" },
+        { country: "Netherlands", capital: "Amsterdam", flag: "\u{1F1F3}\u{1F1F1}", region: "western" },
+        { country: "Poland", capital: "Warsaw", flag: "\u{1F1F5}\u{1F1F1}", region: "eastern" },
+        { country: "Portugal", capital: "Lisbon", flag: "\u{1F1F5}\u{1F1F9}", region: "southern" },
+        { country: "Romania", capital: "Bucharest", flag: "\u{1F1F7}\u{1F1F4}", region: "eastern" },
+        { country: "Slovakia", capital: "Bratislava", flag: "\u{1F1F8}\u{1F1F0}", region: "eastern" },
+        { country: "Slovenia", capital: "Ljubljana", flag: "\u{1F1F8}\u{1F1EE}", region: "eastern" },
+        { country: "Spain", capital: "Madrid", flag: "\u{1F1EA}\u{1F1F8}", region: "southern" },
+        { country: "Sweden", capital: "Stockholm", flag: "\u{1F1F8}\u{1F1EA}", region: "northern" }
+    ];
+
+    // ==========================================
+    // MAP PROJECTION
+    // ==========================================
+    function project(lon, lat) {
+        return [(lon + 11) / 47 * 1000, (72 - lat) / 38 * 800];
+    }
+
+    function polyToPath(coords) {
+        return coords.map((p, i) => {
+            const [x, y] = project(p[0], p[1]);
+            return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1);
+        }).join(' ') + ' Z';
+    }
+
+    // ==========================================
+    // EU COUNTRY MAP DATA (simplified polygons)
+    // ==========================================
+    const EU_MAP_DATA = {
+        "Portugal": {
+            paths: [[[-9.5,42],[-8.2,42],[-7.5,41.8],[-7,40],[-7,38.7],[-7.5,37.2],[-8.8,37],[-9.5,37],[-9.8,38.7],[-9.5,40]]],
+            center: [-8.5, 39.5],
+            capitalCoords: [-9.14, 38.72],
+            color: "#e67e22"
+        },
+        "Spain": {
+            paths: [[[-9.3,43.5],[-7.5,43.8],[-5,43.5],[-3,43.5],[-1.8,43.4],[0.3,42.7],[3.3,42.5],[3.3,41.5],[1,41],[-0.3,39.5],[0.3,38.5],[-0.5,37.5],[-1.5,37],[-2,36.7],[-5.5,36.1],[-7.4,37],[-7,38.7],[-7,40],[-7.5,41.8],[-8.2,42],[-9.3,43]]],
+            center: [-3.7, 40],
+            capitalCoords: [-3.7, 40.42],
+            color: "#e74c3c"
+        },
+        "France": {
+            paths: [
+                [[-1.8,43.4],[-1,43],[0.5,42.6],[3,43.2],[3.5,42.5],[4.5,43.5],[5,43.3],[6.5,43.2],[7.5,43.8],[7,45.5],[7,46.5],[6.2,47.3],[5,47.5],[3.5,48.5],[2.5,49],[1.5,50.1],[0,49.5],[-1,48.8],[-2,48.6],[-4.5,48.5],[-4.8,47.8],[-3,47.5],[-2,47.2],[-1.2,46.2],[-1.8,45.5],[-1.2,44.5],[-1.8,43.4]]],
+            center: [2.3, 46.5],
+            capitalCoords: [2.35, 48.86],
+            color: "#3498db"
+        },
+        "Ireland": {
+            paths: [[[-10,51.5],[-9.5,52.2],[-10.5,53.5],[-10,54],[-9,54.3],[-7.5,55.3],[-6,55.2],[-6,54],[-6.5,53.4],[-6.2,52.2],[-7.5,51.5],[-10,51.5]]],
+            center: [-8, 53.3],
+            capitalCoords: [-6.26, 53.35],
+            color: "#27ae60"
+        },
+        "Belgium": {
+            paths: [[[2.5,49.5],[2.5,50.8],[3.4,51.4],[4.3,51.4],[5.1,51.5],[6,50.8],[6.2,50.2],[5.8,49.5],[4.5,49.5],[2.5,49.5]]],
+            center: [4.4, 50.5],
+            capitalCoords: [4.35, 50.85],
+            color: "#f1c40f"
+        },
+        "Netherlands": {
+            paths: [[[3.4,51.4],[3.6,51.8],[4,52],[4.5,52.5],[5,53],[5.5,53.5],[6.8,53.5],[7,52.5],[7,51.9],[6,50.8],[5.1,51.5],[4.3,51.4],[3.4,51.4]]],
+            center: [5.2, 52.2],
+            capitalCoords: [4.9, 52.37],
+            color: "#e67e22"
+        },
+        "Luxembourg": {
+            paths: [[[5.8,49.5],[5.8,50],[6.2,50.2],[6.5,49.8],[6.4,49.5],[5.8,49.5]]],
+            center: [6.1, 49.8],
+            capitalCoords: [6.13, 49.61],
+            color: "#16a085",
+            small: true
+        },
+        "Germany": {
+            paths: [[[6,50.8],[7,51.9],[7,52.5],[6.8,53.5],[7,54],[8,54.5],[8.5,55],[9.5,55],[10.5,54.5],[11,54.5],[12,54.5],[14,54.3],[14.7,53.9],[14.7,52.5],[14.7,51],[15,50.5],[14,50.5],[12.5,50.2],[12.2,49.5],[13,48.5],[13,47.5],[12,47.5],[10.5,47.5],[9,47.5],[7.5,47.5],[7.5,48.5],[7.5,49.5],[6.4,49.5],[6.5,49.8],[6.2,50.2],[6,50.8]]],
+            center: [10.4, 51.1],
+            capitalCoords: [13.4, 52.52],
+            color: "#2c3e50"
+        },
+        "Denmark": {
+            paths: [
+                [[8.1,54.8],[8.2,55.5],[8.6,56.5],[8.3,57.2],[9.5,57.6],[10.5,57.7],[10.2,56.5],[10.5,56],[10,55.5],[9.5,55],[8.5,55],[8.1,54.8]],
+                [[10.8,54.8],[11,55.2],[12,55.8],[12.7,55.6],[12.5,54.8],[11.5,54.5],[10.8,54.8]]
+            ],
+            center: [9.5, 56],
+            capitalCoords: [12.57, 55.68],
+            color: "#c0392b"
+        },
+        "Sweden": {
+            paths: [[[11,56],[12,56.5],[12.5,57.5],[11.5,58.5],[11.5,59.5],[12,60],[13,60.5],[15,62],[16,63.5],[17,64.5],[18,65.5],[20,66.5],[21,67],[23.5,67.5],[24,66.5],[22,64],[19,63.5],[18.5,62.5],[18.5,61],[17.5,60],[16.5,59],[16,58],[14,56.5],[13,55.5],[12,55.5],[11,56]]],
+            center: [16, 62],
+            capitalCoords: [18.07, 59.33],
+            color: "#2980b9"
+        },
+        "Finland": {
+            paths: [[[21,59.5],[22,60],[23,60.5],[25,60.2],[27,60.5],[28,61],[29,62],[30,63],[29.5,64.5],[28,65.5],[27,67],[28,68],[29,69.5],[27,70],[24,68.5],[22,67],[21,65.5],[21,64],[22,63],[23.5,62],[23,61],[21,59.5]]],
+            center: [26, 64],
+            capitalCoords: [24.94, 60.17],
+            color: "#ecf0f1"
+        },
+        "Estonia": {
+            paths: [[[22,57.7],[24,57.6],[25,57.8],[27,57.5],[28,58],[28,59.5],[27,59.8],[25,59.6],[23.5,59.5],[22,59.5],[22,57.7]]],
+            center: [25, 58.8],
+            capitalCoords: [24.75, 59.44],
+            color: "#3498db"
+        },
+        "Latvia": {
+            paths: [[[21,56.8],[22,57.7],[22,57.7],[24,57.6],[25,57.8],[27,57.5],[28,57],[27.5,56.2],[26,56],[24,56.5],[22.5,56.5],[21,56.8]]],
+            center: [24.5, 57],
+            capitalCoords: [24.1, 56.95],
+            color: "#8e44ad"
+        },
+        "Lithuania": {
+            paths: [[[21,54.5],[22,54.5],[23,54],[24,54],[26,54.5],[26,55.5],[26,56],[24,56.5],[22.5,56.5],[21,56.8],[20.8,55.5],[21,54.5]]],
+            center: [24, 55.5],
+            capitalCoords: [25.28, 54.69],
+            color: "#27ae60"
+        },
+        "Poland": {
+            paths: [[[14,54.3],[14.7,53.9],[14.7,52.5],[14.7,51],[15,50.5],[16,50.2],[17,50.5],[18.5,50],[19,49.5],[20,49.3],[22,49.2],[24,50.5],[24,51.5],[24,52],[23.5,52.5],[23,53.5],[22,54],[20,54.5],[18.5,54.5],[16,54.5],[14,54.3]]],
+            center: [19, 52],
+            capitalCoords: [21, 52.23],
+            color: "#ecf0f1"
+        },
+        "Czech Republic": {
+            paths: [[[12.2,49.5],[13,48.5],[14.5,48.5],[16,48.7],[17,48.8],[18.5,49.5],[18.5,50],[17,50.5],[16,50.2],[15,50.5],[14,50.5],[12.5,50.2],[12.2,49.5]]],
+            center: [15.5, 49.7],
+            capitalCoords: [14.42, 50.08],
+            color: "#3498db"
+        },
+        "Slovakia": {
+            paths: [[[17,48.8],[18.5,49.5],[19,49.5],[20,49.3],[22,49.2],[22,48.5],[21.5,48.3],[20,48.5],[19,48.2],[18,48],[17,48.8]]],
+            center: [19.5, 48.7],
+            capitalCoords: [17.11, 48.15],
+            color: "#2c3e50"
+        },
+        "Austria": {
+            paths: [[[10,47],[10.5,47.5],[12,47.5],[13,47.5],[14.5,47.5],[16,47.5],[17,48.8],[17,48],[16.5,47],[15,47],[14,46.5],[13,46.5],[12,47],[10.5,47],[9.5,47.5],[10,47]]],
+            center: [13.3, 47.5],
+            capitalCoords: [16.37, 48.21],
+            color: "#e74c3c"
+        },
+        "Hungary": {
+            paths: [[[16.5,47],[17,48],[18,48.2],[19,48.2],[20,48.5],[21.5,48.3],[22,48.5],[22.5,47.8],[22,47],[21,46.5],[20,46],[18.5,46],[17.5,46],[16.5,46.5],[16.5,47]]],
+            center: [19.5, 47.2],
+            capitalCoords: [19.04, 47.5],
+            color: "#e67e22"
+        },
+        "Slovenia": {
+            paths: [[[13.5,46.5],[14,46.5],[15,46.5],[16,46.5],[16.5,46.5],[16.5,46],[16,45.5],[14.5,45.5],[13.5,45.5],[13.5,46.5]]],
+            center: [14.8, 46],
+            capitalCoords: [14.51, 46.06],
+            color: "#16a085",
+            small: true
+        },
+        "Croatia": {
+            paths: [[[13.5,45.5],[14.5,45.5],[15,45.5],[16,45.5],[16.5,46],[16.5,46.5],[17.5,46],[18.5,46],[19,45.5],[19.5,45],[19,44.5],[18,44.5],[17,43.5],[16.5,43],[15.5,43.5],[15,44],[14.5,45],[14,45.3],[13.5,45.5]]],
+            center: [16, 45],
+            capitalCoords: [15.98, 45.81],
+            color: "#c0392b"
+        },
+        "Romania": {
+            paths: [[[22,48.5],[22.5,47.8],[22,47],[22.5,46.5],[23,46],[25,44.5],[26,44],[28,44.5],[29,44.5],[29.5,45.5],[29,46],[28,46.5],[27,47.5],[26,48],[24,48.5],[24,50.5],[22,49.2],[22,48.5]]],
+            center: [25.5, 46],
+            capitalCoords: [26.1, 44.43],
+            color: "#f39c12"
+        },
+        "Bulgaria": {
+            paths: [[[22.5,44.5],[23,44],[23.5,43.5],[24,43],[25,42.5],[26,41.5],[28,41.5],[28.5,43],[28,44.5],[26,44],[25,44.5],[23,44.5],[22.5,44.5]]],
+            center: [25.5, 42.8],
+            capitalCoords: [23.32, 42.7],
+            color: "#27ae60"
+        },
+        "Greece": {
+            paths: [
+                [[20,40],[21,40.5],[22,40.5],[23,40.5],[24,40.5],[26,41],[26,40],[25,39],[24.5,38],[24,37.5],[23,37.5],[22.5,37],[22.5,36.5],[23,36.5],[22,37],[21,37.5],[20.5,38.5],[20.5,39.5],[20,40]],
+                [[23.5,35.5],[24.5,35.2],[26,35.3],[26,35.5],[24.5,35.8],[23.5,35.5]]
+            ],
+            center: [22, 39],
+            capitalCoords: [23.73, 37.98],
+            color: "#2980b9"
+        },
+        "Italy": {
+            paths: [
+                [[7,44],[8,44.5],[7.5,44],[7.5,43.8],[10,44.5],[11,44.5],[12.5,44.5],[13.5,44],[14,43],[14.5,42],[15,41],[16,40],[16,39],[15.5,38.5],[16,38],[15.5,37.5],[13,38],[12,38.5],[11,39],[10,40],[10,41],[9.5,41.5],[9,41.5],[8,42.5],[8,43.5],[7,44]],
+                [[13,38.5],[12.5,37.5],[13,37],[15,37],[15.5,37.5],[15,38],[13,38.5]],
+                [[9,41],[8.5,40],[9,39],[9.5,39],[10,39.5],[9.5,40.5],[9,41]]
+            ],
+            center: [12, 42.5],
+            capitalCoords: [12.5, 41.9],
+            color: "#27ae60"
+        },
+        "Malta": {
+            paths: [[[14.3,36],[14.6,36],[14.6,35.8],[14.3,35.8],[14.3,36]]],
+            center: [14.45, 35.9],
+            capitalCoords: [14.51, 35.9],
+            color: "#e74c3c",
+            small: true
+        },
+        "Cyprus": {
+            paths: [[[32,35.7],[33,35.6],[34,35.2],[34.5,35.5],[33.5,35.8],[32.5,35.8],[32,35.7]]],
+            center: [33, 35.2],
+            capitalCoords: [33.37, 35.17],
+            color: "#f39c12",
+            small: true
+        }
+    };
+
+    // ==========================================
+    // NON-EU COUNTRIES (for context)
+    // ==========================================
+    const NON_EU_MAP_DATA = {
+        "United Kingdom": {
+            paths: [
+                [[-5.5,50],[-3,50.5],[-1,50.8],[1.5,51.5],[1.8,52.5],[0,53],[-1,53.5],[-3,53.5],[-3,54.5],[-2.5,55.5],[-1.5,56],[-2,57],[-3,57.5],[-5,58.5],[-5.5,57.5],[-5.5,56.5],[-4.5,55.5],[-5,54.5],[-3.5,54],[-3,53],[-4.5,52.5],[-5,51.5],[-5.5,50]],
+                [[-5,56],[-6,56.5],[-7,57.5],[-6.5,58.5],[-5,58.5],[-5,56]]
+            ]
+        },
+        "Norway": {
+            paths: [[[5,58],[5,59],[6,59.5],[5,60.5],[5.5,61.5],[6,62],[7.5,63],[10,64],[13,66],[14,67.5],[15,68.5],[16,69],[18,69.5],[22,70],[25,71],[31,70.5],[30,69.5],[28,68],[27,67],[22,67],[21,65.5],[18.5,65],[16,64],[14,63],[13,62],[12,60.5],[11.5,59.5],[11,58.5],[10,58],[8,57.8],[5,58]]]
+        },
+        "Switzerland": {
+            paths: [[[6,46],[6,47.5],[7.5,47.5],[9.5,47.5],[10,47],[10.5,47],[9.5,46],[8,46],[6,46]]]
+        },
+        "Serbia": {
+            paths: [[[19,45.5],[19.5,45],[19.5,44.5],[20,44],[20.5,43.5],[21.5,43],[22.5,43],[22.5,44.5],[22,45],[21,45.5],[20,45.5],[19.5,46],[19,45.5]]]
+        },
+        "Bosnia": {
+            paths: [[[16,45.5],[16.5,43.8],[17,43],[18,43.5],[19,44],[19.5,44.5],[19.5,45],[19,45.5],[18.5,46],[17.5,46],[16.5,46],[16,45.5]]]
+        },
+        "Montenegro": {
+            paths: [[[18,43.5],[18.5,42.5],[19.5,42],[20,42.5],[20.5,43.5],[19.5,43.5],[18,43.5]]]
+        },
+        "North Macedonia": {
+            paths: [[[20.5,42.5],[20.5,41.5],[21,41],[22,41],[22.5,41.5],[22.5,42],[21.5,42.5],[20.5,42.5]]]
+        },
+        "Albania": {
+            paths: [[[19.5,42],[19.5,41],[20,40],[20.5,40.5],[20.5,41.5],[20.5,42.5],[19.5,42]]]
+        },
+        "Kosovo": {
+            paths: [[[20.5,42.5],[21,42],[21.5,42.5],[22,42.5],[22.5,42],[22.5,43],[21.5,43],[20.5,42.5]]]
+        },
+        "Ukraine": {
+            paths: [[[24,50.5],[24,52],[23.5,52.5],[23,53.5],[24,54],[26,54.5],[28,55],[30,55.5],[33,55],[36,54],[36,52],[35,50],[35,48.5],[34,47],[33,46.5],[35,46],[35,45.5],[34,45],[33,45.5],[32,46],[30,46.5],[29,46],[29,45.5],[28,46.5],[27,47.5],[26,48],[24,48.5],[24,50.5]]]
+        },
+        "Belarus": {
+            paths: [[[24,54],[23,53.5],[23.5,52.5],[24,52],[24,50.5],[26,51],[28,51.5],[30,52],[32,53],[32,54],[30,55.5],[28,55],[26,54.5],[24,54]]]
+        },
+        "Moldova": {
+            paths: [[[27,47.5],[28,46.5],[29,46],[29.5,46.5],[29.5,47.5],[28.5,48.5],[27,48],[27,47.5]]]
+        },
+        "Turkey": {
+            paths: [[[26,41],[27,41.5],[28,41],[29,41.5],[28.5,42.2],[30,42],[32,42],[34,42],[36,37],[34,36],[32,36.5],[30,36.5],[28,37],[26,38],[26,40],[26,41]]]
+        },
+        "Russia": {
+            paths: [[[28,59.5],[30,60],[32,60],[34,59.5],[36,60],[36,62],[35,64],[33,66],[32,67],[31,69],[31,70.5],[30,69.5],[28,68],[27,67],[28,65.5],[29.5,64.5],[30,63],[29,62],[28,61],[27,60.5],[28,59.5]]]
+        },
+        "Iceland": {
+            paths: [[[-24,64],[-22,64],[-18,65],[-14,66],[-14,65],[-18,64],[-20,63.5],[-24,64]]]
+        }
+    };
+
+    // ==========================================
+    // CAPITAL COORDINATES (lon, lat) for dots
+    // ==========================================
+    // (embedded in EU_MAP_DATA as capitalCoords)
+
+    // ==========================================
+    // CONSTANTS
+    // ==========================================
+    const QUESTIONS_PER_ROUND = 15;
+    const XP_CORRECT = 10;
+    const XP_STREAK_BONUS = 5;
+    const XP_FAST_BONUS = 5;
+    const STORAGE_KEY = 'eq_';
+
+    const THEMES = {
+        explorer: { title: "Euro Quest!", sub: "Master the capitals of Europe", correct: ["Brilliant!","Nailed it!","Well done!","Superb!"], incorrect: ["Not quite!","Keep going!","Almost!"] },
+        agent: { title: "Mission: Europe", sub: "Intelligence briefing required", correct: ["Intel confirmed!","Target acquired!","Mission success!","Agent level up!"], incorrect: ["Intel compromised!","Try again, Agent!","Regroup!"] },
+        vintage: { title: "The Grand Tour", sub: "Chart your course across Europe", correct: ["Excellent cartography!","Well charted!","A scholar's answer!","Bravo!"], incorrect: ["Consult the atlas!","Uncharted waters!","Review your maps!"] },
+        pixel: { title: "GEO QUEST", sub: "Level up your map skills!", correct: ["EPIC LOOT!","CRITICAL HIT!","+1 KNOWLEDGE!","COMBO!"], incorrect: ["GAME OVER... jk!","TRY AGAIN!","RESPAWN!"] }
+    };
+
+    // ==========================================
+    // STATE
+    // ==========================================
+    let state = {
+        stats: JSON.parse(localStorage.getItem(STORAGE_KEY + 'stats') || '{}'),
+        xp: parseInt(localStorage.getItem(STORAGE_KEY + 'xp') || '0'),
+        theme: localStorage.getItem(STORAGE_KEY + 'theme') || 'explorer',
+        selectedMode: 'capital',
+        selectedRegion: 'all',
+        queue: [], currentQ: null, asked: 0, correct: 0,
+        streak: 0, bestStreak: 0, mistakes: [],
+        timerStart: null, timerInterval: null, problemStart: null,
+        answering: false,
+        learnList: [...EU_COUNTRIES], learnIndex: 0,
+        studyView: 'map', statsView: 'map'
+    };
+
+    // ==========================================
+    // SVG MAP BUILDER
+    // ==========================================
+    function buildMapSVG(options) {
+        const { id, interactive, onClick, colorFn, showInfo } = options;
+        let svg = '<svg id="' + id + '" viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">';
+
+        // Ocean background
+        svg += '<rect x="0" y="0" width="1000" height="800" fill="#c8dff5" rx="10"/>';
+
+        // Sea labels
+        const seaLabels = [
+            { name: "Atlantic\nOcean", x: -5, y: 55 },
+            { name: "Mediterranean Sea", x: 14, y: 37 },
+            { name: "North Sea", x: 3, y: 56 },
+            { name: "Baltic Sea", x: 17, y: 58 },
+            { name: "Black Sea", x: 33, y: 43 }
         ];
-
-        // ==========================================
-        // CONSTANTS
-        // ==========================================
-        const QUESTIONS_PER_ROUND = 15;
-        const XP_CORRECT = 10;
-        const XP_STREAK_BONUS = 5;
-        const XP_FAST_BONUS = 5;
-        const STORAGE_KEY = 'eq_';
-
-        const THEMES = {
-            explorer: {
-                title: "Euro Quest!",
-                sub: "Master the capitals of Europe",
-                correct: ["Brilliant!", "Nailed it!", "Well done!", "Superb!"],
-                incorrect: ["Not quite!", "Keep going!", "Almost!"]
-            },
-            agent: {
-                title: "Mission: Europe",
-                sub: "Intelligence briefing required",
-                correct: ["Intel confirmed!", "Target acquired!", "Mission success!", "Agent level up!"],
-                incorrect: ["Intel compromised!", "Try again, Agent!", "Regroup!"]
-            },
-            vintage: {
-                title: "The Grand Tour",
-                sub: "Chart your course across Europe",
-                correct: ["Excellent cartography!", "Well charted!", "A scholar's answer!", "Bravo!"],
-                incorrect: ["Consult the atlas!", "Uncharted waters!", "Review your maps!"]
-            },
-            pixel: {
-                title: "GEO QUEST",
-                sub: "Level up your map skills!",
-                correct: ["EPIC LOOT!", "CRITICAL HIT!", "+1 KNOWLEDGE!", "COMBO!"],
-                incorrect: ["GAME OVER... jk!", "TRY AGAIN!", "RESPAWN!"]
-            }
-        };
-
-        // ==========================================
-        // STATE
-        // ==========================================
-        let state = {
-            stats: JSON.parse(localStorage.getItem(STORAGE_KEY + 'stats') || '{}'),
-            xp: parseInt(localStorage.getItem(STORAGE_KEY + 'xp') || '0'),
-            theme: localStorage.getItem(STORAGE_KEY + 'theme') || 'explorer',
-            selectedMode: 'capital',
-            selectedRegion: 'all',
-            // Game state
-            queue: [],
-            currentQ: null,
-            asked: 0,
-            correct: 0,
-            streak: 0,
-            bestStreak: 0,
-            mistakes: [],
-            timerStart: null,
-            timerInterval: null,
-            problemStart: null,
-            answering: false,
-            // Learn state
-            learnList: [...EU_COUNTRIES],
-            learnIndex: 0
-        };
-
-        // ==========================================
-        // INIT
-        // ==========================================
-        function init() {
-            setTheme(state.theme);
-            updateXPBar();
-        }
-
-        // ==========================================
-        // THEME
-        // ==========================================
-        function setTheme(t) {
-            state.theme = t;
-            document.body.setAttribute('data-theme', t === 'explorer' ? '' : t);
-            localStorage.setItem(STORAGE_KEY + 'theme', t);
-
-            const cfg = THEMES[t];
-            document.getElementById('title-text').textContent = cfg.title;
-            document.getElementById('subheading-text').textContent = cfg.sub;
-
-            document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.t === t);
-            });
-        }
-
-        // ==========================================
-        // MODE & REGION SELECTION
-        // ==========================================
-        function selectMode(el) {
-            document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            state.selectedMode = el.dataset.mode;
-        }
-
-        function selectRegion(el) {
-            document.querySelectorAll('.region-pill').forEach(p => p.classList.remove('active'));
-            el.classList.add('active');
-            state.selectedRegion = el.dataset.region;
-        }
-
-        // ==========================================
-        // GET FILTERED COUNTRIES
-        // ==========================================
-        function getFilteredCountries() {
-            const r = state.selectedRegion;
-            if (r === 'all') return [...EU_COUNTRIES];
-            if (r === 'weak') {
-                // Countries with lowest scores
-                const scored = EU_COUNTRIES.map(c => {
-                    const s = state.stats[c.country];
-                    if (!s) return { ...c, score: -1 };
-                    const ratio = s.attempts > 0 ? s.correct / s.attempts : 0;
-                    return { ...c, score: ratio };
-                });
-                scored.sort((a, b) => a.score - b.score);
-                return scored.slice(0, Math.max(10, Math.ceil(EU_COUNTRIES.length / 2)));
-            }
-            return EU_COUNTRIES.filter(c => c.region === r);
-        }
-
-        // ==========================================
-        // BUILD QUESTION QUEUE
-        // ==========================================
-        function buildQueue() {
-            const countries = getFilteredCountries();
-            if (countries.length === 0) return [];
-
-            const modes = state.selectedMode === 'mix'
-                ? ['capital', 'country', 'flag']
-                : [state.selectedMode];
-
-            let pool = [];
-            countries.forEach(c => {
-                modes.forEach(m => {
-                    pool.push({ ...c, mode: m });
-                });
-            });
-
-            // Shuffle
-            for (let i = pool.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [pool[i], pool[j]] = [pool[j], pool[i]];
-            }
-
-            return pool.slice(0, QUESTIONS_PER_ROUND);
-        }
-
-        // ==========================================
-        // GENERATE OPTIONS (for multiple choice)
-        // ==========================================
-        function generateOptions(correctAnswer, field) {
-            const allAnswers = EU_COUNTRIES.map(c => c[field]);
-            const options = [correctAnswer];
-
-            while (options.length < 4) {
-                const rand = allAnswers[Math.floor(Math.random() * allAnswers.length)];
-                if (!options.includes(rand)) options.push(rand);
-            }
-
-            // Shuffle
-            for (let i = options.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [options[i], options[j]] = [options[j], options[i]];
-            }
-
-            return options;
-        }
-
-        // ==========================================
-        // START GAME
-        // ==========================================
-        function startGame() {
-            state.queue = buildQueue();
-            if (state.queue.length === 0) {
-                alert('No countries match your selection!');
-                return;
-            }
-
-            state.asked = 0;
-            state.correct = 0;
-            state.streak = 0;
-            state.bestStreak = 0;
-            state.mistakes = [];
-            state.answering = false;
-
-            showScreen('game');
-            startTimer();
-            nextQuestion();
-        }
-
-        // ==========================================
-        // NEXT QUESTION
-        // ==========================================
-        function nextQuestion() {
-            if (state.asked >= state.queue.length) return finishGame();
-
-            state.currentQ = state.queue[state.asked];
-            state.answering = true;
-            state.problemStart = Date.now();
-
-            const q = state.currentQ;
-            const flagEl = document.getElementById('q-flag');
-            const textEl = document.getElementById('q-text');
-            const subEl = document.getElementById('q-sub');
-            const optGrid = document.getElementById('options-grid');
-            const typeForm = document.getElementById('type-form');
-
-            // Update progress
-            document.getElementById('progress-fill').style.width = `${(state.asked / state.queue.length) * 100}%`;
-            document.getElementById('q-counter').textContent = `${state.asked + 1} / ${state.queue.length}`;
-
-            // Animate question card
-            const card = document.getElementById('question-card');
-            card.style.animation = 'none';
-            card.offsetHeight;
-            card.style.animation = 'slideUp 0.35s ease';
-
-            if (q.mode === 'capital') {
-                flagEl.textContent = q.flag;
-                textEl.textContent = q.country;
-                subEl.textContent = 'What is the capital?';
-                showMultipleChoice(q.capital, 'capital');
-            } else if (q.mode === 'country') {
-                flagEl.textContent = '🏛️';
-                textEl.textContent = q.capital;
-                subEl.textContent = 'Which country is this the capital of?';
-                showMultipleChoice(q.country, 'country');
-            } else if (q.mode === 'flag') {
-                flagEl.textContent = q.flag;
-                textEl.textContent = '';
-                subEl.textContent = 'Which country does this flag belong to?';
-                showMultipleChoice(q.country, 'country');
-            }
-        }
-
-        function showMultipleChoice(correctAnswer, field) {
-            const optGrid = document.getElementById('options-grid');
-            const typeForm = document.getElementById('type-form');
-            typeForm.style.display = 'none';
-            optGrid.style.display = 'grid';
-
-            const options = generateOptions(correctAnswer, field);
-            optGrid.innerHTML = '';
-
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.textContent = opt;
-                btn.onclick = () => handleAnswer(opt, correctAnswer, btn);
-                optGrid.appendChild(btn);
-            });
-        }
-
-        // ==========================================
-        // HANDLE ANSWER
-        // ==========================================
-        function handleAnswer(selected, correct, btnEl) {
-            if (!state.answering) return;
-            state.answering = false;
-
-            const isCorrect = selected === correct;
-            const timeTaken = (Date.now() - state.problemStart) / 1000;
-            const allBtns = document.querySelectorAll('.option-btn');
-
-            if (isCorrect) {
-                state.correct++;
-                state.streak++;
-                if (state.streak > state.bestStreak) state.bestStreak = state.streak;
-
-                btnEl.classList.add('correct');
-                allBtns.forEach(b => { if (b !== btnEl) b.classList.add('disabled'); });
-
-                // XP
-                let earned = XP_CORRECT;
-                if (state.streak >= 5) earned += XP_STREAK_BONUS;
-                if (timeTaken < 3) earned += XP_FAST_BONUS;
-                addXP(earned);
-
-                showFeedback(true);
-                updateCountryStats(state.currentQ.country, true);
-
-                if (state.streak > 0 && state.streak % 5 === 0) fireConfetti();
+        seaLabels.forEach(s => {
+            const [sx, sy] = project(s.x, s.y);
+            if (s.name.includes('\n')) {
+                const parts = s.name.split('\n');
+                svg += '<text x="' + sx.toFixed(1) + '" y="' + (sy - 5).toFixed(1) + '" class="sea-label">' + parts[0] + '</text>';
+                svg += '<text x="' + sx.toFixed(1) + '" y="' + (sy + 7).toFixed(1) + '" class="sea-label">' + parts[1] + '</text>';
             } else {
-                state.streak = 0;
-                btnEl.classList.add('wrong');
-
-                // Reveal correct answer
-                allBtns.forEach(b => {
-                    if (b.textContent === correct) b.classList.add('reveal');
-                    else if (b !== btnEl) b.classList.add('disabled');
-                });
-
-                showFeedback(false, correct);
-                updateCountryStats(state.currentQ.country, false);
-                state.mistakes.push(state.currentQ);
-            }
-
-            // Update streak display
-            document.getElementById('streak-display').textContent = `Streak: ${state.streak}`;
-
-            state.asked++;
-            setTimeout(nextQuestion, isCorrect ? 800 : 2000);
-        }
-
-        // ==========================================
-        // FEEDBACK
-        // ==========================================
-        function showFeedback(success, correctVal) {
-            const overlay = document.getElementById('feedback-overlay');
-            const pool = success ? THEMES[state.theme].correct : THEMES[state.theme].incorrect;
-            const msg = pool[Math.floor(Math.random() * pool.length)];
-
-            overlay.textContent = success ? msg : msg;
-            overlay.style.color = success ? 'var(--success)' : 'var(--danger)';
-            overlay.classList.add('show');
-            setTimeout(() => overlay.classList.remove('show'), 1000);
-
-            // Audio
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-
-                if (success) {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523, ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(784, ctx.currentTime + 0.1);
-                    gain.gain.setValueAtTime(0.08, ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
-                } else {
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(200, ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.2);
-                    gain.gain.setValueAtTime(0.08, ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-                }
-                osc.start();
-                osc.stop(ctx.currentTime + 0.3);
-            } catch (e) { /* audio not supported */ }
-        }
-
-        // ==========================================
-        // FINISH GAME
-        // ==========================================
-        function finishGame() {
-            stopTimer();
-            showScreen('end');
-
-            const total = state.queue.length;
-            const accuracy = total > 0 ? Math.round((state.correct / total) * 100) : 0;
-
-            document.getElementById('end-correct').textContent = `${state.correct}/${total}`;
-            document.getElementById('end-accuracy').textContent = `${accuracy}%`;
-            document.getElementById('end-streak').textContent = state.bestStreak;
-
-            // End title based on score
-            const titles = accuracy >= 90 ? ["Geography Genius!", "Map Master!", "Capital Expert!"]
-                : accuracy >= 70 ? ["Great Explorer!", "Well Travelled!", "Getting There!"]
-                : accuracy >= 50 ? ["Keep Exploring!", "On Your Way!", "Good Effort!"]
-                : ["Keep Practising!", "You'll Get There!", "Try Again!"];
-            document.getElementById('end-title').textContent = titles[Math.floor(Math.random() * titles.length)];
-
-            // XP bonus
-            if (accuracy >= 90) {
-                addXP(50);
-                document.getElementById('xp-gain').textContent = "+50 Bonus XP!";
-                fireConfetti();
-            } else if (accuracy >= 70) {
-                addXP(20);
-                document.getElementById('xp-gain').textContent = "+20 Bonus XP!";
-            } else {
-                document.getElementById('xp-gain').textContent = '';
-            }
-
-            // Show mistakes for review
-            const mistakesEl = document.getElementById('end-mistakes');
-            if (state.mistakes.length > 0) {
-                mistakesEl.innerHTML = '<p style="font-weight: 800; margin-bottom: 8px;">Review these:</p>' +
-                    state.mistakes.map(m =>
-                        `<div style="padding: 8px 12px; margin: 4px 0; border-radius: 8px; background: rgba(239,68,68,0.08); font-size: 0.95rem;">
-                            ${m.flag} <strong>${m.country}</strong> — ${m.capital}
-                        </div>`
-                    ).join('');
-            } else {
-                mistakesEl.innerHTML = '<p style="color: var(--success); font-weight: 800;">Perfect round! No mistakes!</p>';
-            }
-        }
-
-        // ==========================================
-        // STATS
-        // ==========================================
-        function updateCountryStats(country, correct) {
-            const s = state.stats[country] || { attempts: 0, correct: 0, streak: 0 };
-            s.attempts++;
-            if (correct) {
-                s.correct++;
-                s.streak++;
-            } else {
-                s.streak = 0;
-            }
-            state.stats[country] = s;
-            localStorage.setItem(STORAGE_KEY + 'stats', JSON.stringify(state.stats));
-        }
-
-        function getBoxClass(country) {
-            const s = state.stats[country];
-            if (!s) return 'box-new';
-            const ratio = s.attempts > 0 ? s.correct / s.attempts : 0;
-            if (s.streak >= 3 && ratio >= 0.8) return 'box-mastered';
-            if (ratio >= 0.7) return 'box-good';
-            if (ratio >= 0.4) return 'box-learning';
-            if (s.attempts > 0) return 'box-struggling';
-            return 'box-new';
-        }
-
-        function renderStats() {
-            const grid = document.getElementById('stats-grid');
-            grid.innerHTML = '';
-
-            let mastered = 0, learning = 0, notStarted = 0;
-
-            EU_COUNTRIES.forEach(c => {
-                const box = getBoxClass(c.country);
-                const s = state.stats[c.country];
-
-                if (box === 'box-mastered') mastered++;
-                else if (box === 'box-new') notStarted++;
-                else learning++;
-
-                const card = document.createElement('div');
-                card.className = `stat-card ${box}`;
-                card.innerHTML = `
-                    <div class="stat-flag">${c.flag}</div>
-                    <div class="stat-name">${c.country}</div>
-                    <div class="stat-capital">${c.capital}</div>
-                    ${s ? `<div style="font-size: 0.65rem; margin-top: 3px;">${s.correct}/${s.attempts}</div>` : ''}
-                `;
-                grid.appendChild(card);
-            });
-
-            document.getElementById('stats-mastered').textContent = mastered;
-            document.getElementById('stats-learning').textContent = learning;
-            document.getElementById('stats-new').textContent = notStarted;
-        }
-
-        function resetProgress() {
-            if (confirm('Reset all progress? This cannot be undone!')) {
-                state.stats = {};
-                state.xp = 0;
-                localStorage.removeItem(STORAGE_KEY + 'stats');
-                localStorage.removeItem(STORAGE_KEY + 'xp');
-                updateXPBar();
-                renderStats();
-            }
-        }
-
-        // ==========================================
-        // LEARN MODE
-        // ==========================================
-        function initLearn() {
-            state.learnIndex = 0;
-            renderLearnCard();
-        }
-
-        function renderLearnCard() {
-            const c = state.learnList[state.learnIndex];
-            document.getElementById('learn-flag').textContent = c.flag;
-            document.getElementById('learn-country').textContent = c.country;
-            const capEl = document.getElementById('learn-capital');
-            capEl.textContent = c.capital;
-            capEl.style.opacity = '0';
-            capEl.style.cursor = 'pointer';
-            document.getElementById('learn-counter').textContent = `${state.learnIndex + 1} / ${state.learnList.length}`;
-
-            // Animate
-            const card = document.getElementById('learn-card');
-            card.style.animation = 'none';
-            card.offsetHeight;
-            card.style.animation = 'slideUp 0.3s ease';
-        }
-
-        function revealCapital() {
-            const el = document.getElementById('learn-capital');
-            el.style.opacity = '1';
-            el.style.cursor = 'default';
-        }
-
-        function learnNext() {
-            state.learnIndex = (state.learnIndex + 1) % state.learnList.length;
-            renderLearnCard();
-        }
-
-        function learnPrev() {
-            state.learnIndex = (state.learnIndex - 1 + state.learnList.length) % state.learnList.length;
-            renderLearnCard();
-        }
-
-        function shuffleLearn() {
-            for (let i = state.learnList.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [state.learnList[i], state.learnList[j]] = [state.learnList[j], state.learnList[i]];
-            }
-            state.learnIndex = 0;
-            renderLearnCard();
-        }
-
-        // ==========================================
-        // XP & LEVELING
-        // ==========================================
-        function addXP(amount) {
-            const oldLevel = Math.floor(state.xp / 100) + 1;
-            state.xp += amount;
-            localStorage.setItem(STORAGE_KEY + 'xp', state.xp);
-            updateXPBar();
-
-            const newLevel = Math.floor(state.xp / 100) + 1;
-            if (newLevel > oldLevel) {
-                fireConfetti();
-                showFeedback(true);
-            }
-        }
-
-        function updateXPBar() {
-            const level = Math.floor(state.xp / 100) + 1;
-            const xpInLevel = state.xp % 100;
-            document.getElementById('level-display').textContent = `LVL ${level}`;
-            document.getElementById('xp-text').textContent = `${xpInLevel} / 100 XP`;
-            document.getElementById('xp-bar-fill').style.width = `${xpInLevel}%`;
-        }
-
-        // ==========================================
-        // TIMER
-        // ==========================================
-        function startTimer() {
-            state.timerStart = Date.now();
-            state.timerInterval = setInterval(() => {
-                const elapsed = Math.floor((Date.now() - state.timerStart) / 1000);
-                document.getElementById('timer-display').textContent = `${elapsed}s`;
-            }, 1000);
-        }
-
-        function stopTimer() {
-            clearInterval(state.timerInterval);
-        }
-
-        // ==========================================
-        // NAVIGATION
-        // ==========================================
-        function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(`${id}-screen`).classList.add('active');
-            if (id === 'stats') renderStats();
-            if (id === 'learn') initLearn();
-        }
-
-        // ==========================================
-        // CONFETTI
-        // ==========================================
-        function fireConfetti() {
-            const colors = {
-                explorer: ['#2563eb', '#f59e0b', '#10b981'],
-                agent: ['#dc2626', '#18181b', '#ffffff'],
-                vintage: ['#92400e', '#065f46', '#fef3c7'],
-                pixel: ['#7c3aed', '#06b6d4', '#ffffff']
-            };
-            confetti({
-                particleCount: 120,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: colors[state.theme] || colors.explorer
-            });
-        }
-
-        // ==========================================
-        // SWIPE SUPPORT (for learn mode on iPad)
-        // ==========================================
-        let touchStartX = 0;
-        document.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        document.addEventListener('touchend', e => {
-            if (!document.getElementById('learn-screen').classList.contains('active')) return;
-            const diff = e.changedTouches[0].screenX - touchStartX;
-            if (Math.abs(diff) > 60) {
-                if (diff > 0) learnPrev();
-                else learnNext();
-            }
-        }, { passive: true });
-
-        // ==========================================
-        // KEYBOARD SUPPORT
-        // ==========================================
-        document.addEventListener('keydown', e => {
-            if (document.getElementById('learn-screen').classList.contains('active')) {
-                if (e.key === 'ArrowRight') learnNext();
-                if (e.key === 'ArrowLeft') learnPrev();
-                if (e.key === ' ') { e.preventDefault(); revealCapital(); }
+                svg += '<text x="' + sx.toFixed(1) + '" y="' + sy.toFixed(1) + '" class="sea-label">' + s.name + '</text>';
             }
         });
 
-        // ==========================================
-        // GO!
-        // ==========================================
-        init();
+        // Non-EU countries (grey background)
+        Object.entries(NON_EU_MAP_DATA).forEach(([name, data]) => {
+            data.paths.forEach(poly => {
+                svg += '<path d="' + polyToPath(poly) + '" class="non-eu-country" />';
+            });
+        });
+
+        // EU countries
+        Object.entries(EU_MAP_DATA).forEach(([name, data]) => {
+            const fillColor = colorFn ? colorFn(name) : data.color;
+            const cls = interactive ? 'eu-country' : 'eu-country';
+            const clickAttr = interactive ? ' onclick="' + onClick + '(\'' + name.replace(/'/g, "\\'") + '\')"' : '';
+            const dataAttr = ' data-country="' + name + '"';
+
+            data.paths.forEach(poly => {
+                svg += '<path d="' + polyToPath(poly) + '" fill="' + fillColor + '" class="' + cls + '"' + dataAttr + clickAttr + ' />';
+            });
+
+            // Small country expanded tap target
+            if (data.small && interactive) {
+                const [cx, cy] = project(data.center[0], data.center[1]);
+                svg += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="15" fill="transparent" style="cursor:pointer;"' + clickAttr + dataAttr + ' />';
+            }
+        });
+
+        // Country labels and capital dots
+        Object.entries(EU_MAP_DATA).forEach(([name, data]) => {
+            const [lx, ly] = project(data.center[0], data.center[1]);
+            // Shorter labels for small spaces
+            let label = name;
+            if (name === "Czech Republic") label = "Czechia";
+            if (name === "Luxembourg") label = "Lux.";
+            if (name === "Netherlands") label = "Neth.";
+
+            svg += '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" class="country-label">' + label + '</text>';
+
+            // Capital dot
+            if (data.capitalCoords) {
+                const [dx, dy] = project(data.capitalCoords[0], data.capitalCoords[1]);
+                svg += '<circle cx="' + dx.toFixed(1) + '" cy="' + dy.toFixed(1) + '" r="2" class="capital-dot" />';
+            }
+        });
+
+        svg += '</svg>';
+        return svg;
+    }
+
+    // ==========================================
+    // STUDY MAP
+    // ==========================================
+    function renderStudyMap() {
+        const container = document.getElementById('study-map-container');
+        container.innerHTML = '<div class="map-container" style="position:relative;">' +
+            buildMapSVG({ id: 'study-svg', interactive: true, onClick: 'onStudyMapClick' }) +
+            '<div id="study-info-panel" class="map-info-panel"></div></div>';
+    }
+
+    function onStudyMapClick(countryName) {
+        const c = EU_COUNTRIES.find(c => c.country === countryName);
+        if (!c) return;
+        const panel = document.getElementById('study-info-panel');
+        panel.innerHTML = '<div class="map-info-flag">' + c.flag + '</div>' +
+            '<div class="map-info-name">' + c.country + '</div>' +
+            '<div class="map-info-capital">Capital: ' + c.capital + '</div>';
+        panel.classList.add('visible');
+
+        // Highlight the country
+        const svg = document.getElementById('study-svg');
+        svg.querySelectorAll('.eu-country').forEach(el => {
+            el.style.opacity = el.dataset.country === countryName ? '1' : '0.5';
+        });
+
+        setTimeout(() => {
+            svg.querySelectorAll('.eu-country').forEach(el => el.style.opacity = '1');
+        }, 2000);
+    }
+
+    // ==========================================
+    // STATS MAP
+    // ==========================================
+    function getStatsColor(countryName) {
+        const s = state.stats[countryName];
+        if (!s) return '#d1d5db';
+        const ratio = s.attempts > 0 ? s.correct / s.attempts : 0;
+        if (s.streak >= 3 && ratio >= 0.8) return '#10b981';
+        if (ratio >= 0.7) return '#60a5fa';
+        if (ratio >= 0.4) return '#f59e0b';
+        if (s.attempts > 0) return '#ef4444';
+        return '#d1d5db';
+    }
+
+    function renderStatsMap() {
+        const container = document.getElementById('stats-map-container');
+        container.innerHTML = buildMapSVG({
+            id: 'stats-svg',
+            interactive: true,
+            onClick: 'onStatsMapClick',
+            colorFn: getStatsColor
+        }) + '<div id="stats-info-panel" class="map-info-panel"></div>';
+    }
+
+    function onStatsMapClick(countryName) {
+        const c = EU_COUNTRIES.find(c => c.country === countryName);
+        if (!c) return;
+        const s = state.stats[countryName];
+        const panel = document.getElementById('stats-info-panel');
+        let statsText = 'Not started';
+        if (s) {
+            const pct = s.attempts > 0 ? Math.round(s.correct / s.attempts * 100) : 0;
+            statsText = s.correct + '/' + s.attempts + ' (' + pct + '%)';
+        }
+        panel.innerHTML = '<div class="map-info-flag">' + c.flag + '</div>' +
+            '<div class="map-info-name">' + c.country + '</div>' +
+            '<div class="map-info-capital">' + c.capital + '</div>' +
+            '<div style="font-size:0.85rem;margin-top:4px;font-weight:700;">' + statsText + '</div>';
+        panel.classList.add('visible');
+    }
+
+    // ==========================================
+    // MAP QUIZ
+    // ==========================================
+    function renderQuizMap() {
+        const container = document.getElementById('quiz-map-container');
+        container.innerHTML = buildMapSVG({
+            id: 'quiz-svg',
+            interactive: true,
+            onClick: 'onQuizMapClick'
+        });
+    }
+
+    function onQuizMapClick(countryName) {
+        if (!state.answering) return;
+        state.answering = false;
+
+        const correctCountry = state.currentQ.country;
+        const isCorrect = countryName === correctCountry;
+        const svg = document.getElementById('quiz-svg');
+
+        if (isCorrect) {
+            state.correct++;
+            state.streak++;
+            if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+
+            // Highlight correct green
+            svg.querySelectorAll('[data-country="' + correctCountry + '"]').forEach(el => {
+                el.classList.add('map-highlight-correct');
+            });
+
+            const timeTaken = (Date.now() - state.problemStart) / 1000;
+            let earned = XP_CORRECT;
+            if (state.streak >= 5) earned += XP_STREAK_BONUS;
+            if (timeTaken < 5) earned += XP_FAST_BONUS;
+            addXP(earned);
+
+            showFeedback(true);
+            updateCountryStats(correctCountry, true);
+            if (state.streak > 0 && state.streak % 5 === 0) fireConfetti();
+        } else {
+            state.streak = 0;
+
+            // Highlight wrong red, correct green
+            svg.querySelectorAll('[data-country="' + countryName + '"]').forEach(el => {
+                el.classList.add('map-highlight-wrong');
+            });
+            svg.querySelectorAll('[data-country="' + correctCountry + '"]').forEach(el => {
+                el.classList.add('map-highlight-reveal');
+            });
+
+            showFeedback(false, correctCountry);
+            updateCountryStats(correctCountry, false);
+            state.mistakes.push(state.currentQ);
+        }
+
+        document.getElementById('streak-display').textContent = 'Streak: ' + state.streak;
+        state.asked++;
+
+        setTimeout(() => {
+            // Clear highlights
+            svg.querySelectorAll('.map-highlight-correct,.map-highlight-wrong,.map-highlight-reveal').forEach(el => {
+                el.classList.remove('map-highlight-correct', 'map-highlight-wrong', 'map-highlight-reveal');
+            });
+            nextQuestion();
+        }, isCorrect ? 1000 : 2500);
+    }
+
+    // ==========================================
+    // INIT
+    // ==========================================
+    function init() {
+        setTheme(state.theme);
+        updateXPBar();
+    }
+
+    // ==========================================
+    // THEME
+    // ==========================================
+    function setTheme(t) {
+        state.theme = t;
+        document.body.setAttribute('data-theme', t === 'explorer' ? '' : t);
+        localStorage.setItem(STORAGE_KEY + 'theme', t);
+        const cfg = THEMES[t];
+        document.getElementById('title-text').textContent = cfg.title;
+        document.getElementById('subheading-text').textContent = cfg.sub;
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.t === t);
+        });
+    }
+
+    // ==========================================
+    // MODE & REGION
+    // ==========================================
+    function selectMode(el) {
+        document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        state.selectedMode = el.dataset.mode;
+    }
+
+    function selectRegion(el) {
+        document.querySelectorAll('.region-pill').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+        state.selectedRegion = el.dataset.region;
+    }
+
+    // ==========================================
+    // FILTERED COUNTRIES
+    // ==========================================
+    function getFilteredCountries() {
+        const r = state.selectedRegion;
+        if (r === 'all') return [...EU_COUNTRIES];
+        if (r === 'weak') {
+            const scored = EU_COUNTRIES.map(c => {
+                const s = state.stats[c.country];
+                if (!s) return { ...c, score: -1 };
+                return { ...c, score: s.attempts > 0 ? s.correct / s.attempts : 0 };
+            });
+            scored.sort((a, b) => a.score - b.score);
+            return scored.slice(0, Math.max(10, Math.ceil(EU_COUNTRIES.length / 2)));
+        }
+        return EU_COUNTRIES.filter(c => c.region === r);
+    }
+
+    // ==========================================
+    // BUILD QUEUE
+    // ==========================================
+    function buildQueue() {
+        const countries = getFilteredCountries();
+        if (countries.length === 0) return [];
+
+        const modes = state.selectedMode === 'mix'
+            ? ['capital', 'country', 'flag', 'mapquiz']
+            : [state.selectedMode];
+
+        let pool = [];
+        countries.forEach(c => {
+            modes.forEach(m => pool.push({ ...c, mode: m }));
+        });
+
+        for (let i = pool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        return pool.slice(0, QUESTIONS_PER_ROUND);
+    }
+
+    // ==========================================
+    // GENERATE OPTIONS
+    // ==========================================
+    function generateOptions(correctAnswer, field) {
+        const allAnswers = EU_COUNTRIES.map(c => c[field]);
+        const options = [correctAnswer];
+        while (options.length < 4) {
+            const rand = allAnswers[Math.floor(Math.random() * allAnswers.length)];
+            if (!options.includes(rand)) options.push(rand);
+        }
+        for (let i = options.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [options[i], options[j]] = [options[j], options[i]];
+        }
+        return options;
+    }
+
+    // ==========================================
+    // START GAME
+    // ==========================================
+    function startGame() {
+        state.queue = buildQueue();
+        if (state.queue.length === 0) { alert('No countries match your selection!'); return; }
+        state.asked = 0; state.correct = 0; state.streak = 0;
+        state.bestStreak = 0; state.mistakes = []; state.answering = false;
+        showScreen('game');
+        startTimer();
+        nextQuestion();
+    }
+
+    // ==========================================
+    // NEXT QUESTION
+    // ==========================================
+    function nextQuestion() {
+        if (state.asked >= state.queue.length) return finishGame();
+
+        state.currentQ = state.queue[state.asked];
+        state.answering = true;
+        state.problemStart = Date.now();
+
+        const q = state.currentQ;
+        const flagEl = document.getElementById('q-flag');
+        const textEl = document.getElementById('q-text');
+        const subEl = document.getElementById('q-sub');
+        const optGrid = document.getElementById('options-grid');
+        const mapArea = document.getElementById('map-quiz-area');
+        const questionCard = document.getElementById('question-card');
+
+        document.getElementById('progress-fill').style.width = (state.asked / state.queue.length * 100) + '%';
+        document.getElementById('q-counter').textContent = (state.asked + 1) + ' / ' + state.queue.length;
+
+        // Animate
+        questionCard.style.animation = 'none';
+        questionCard.offsetHeight;
+        questionCard.style.animation = 'slideUp 0.35s ease';
+
+        if (q.mode === 'mapquiz') {
+            flagEl.textContent = q.flag;
+            textEl.textContent = 'Find ' + q.country + '!';
+            subEl.textContent = 'Tap the correct country on the map';
+            optGrid.style.display = 'none';
+            mapArea.style.display = 'block';
+            renderQuizMap();
+        } else if (q.mode === 'capital') {
+            flagEl.textContent = q.flag;
+            textEl.textContent = q.country;
+            subEl.textContent = 'What is the capital?';
+            mapArea.style.display = 'none';
+            showMultipleChoice(q.capital, 'capital');
+        } else if (q.mode === 'country') {
+            flagEl.textContent = '\u{1F3DB}';
+            textEl.textContent = q.capital;
+            subEl.textContent = 'Which country is this the capital of?';
+            mapArea.style.display = 'none';
+            showMultipleChoice(q.country, 'country');
+        } else if (q.mode === 'flag') {
+            flagEl.textContent = q.flag;
+            textEl.textContent = '';
+            subEl.textContent = 'Which country does this flag belong to?';
+            mapArea.style.display = 'none';
+            showMultipleChoice(q.country, 'country');
+        }
+    }
+
+    function showMultipleChoice(correctAnswer, field) {
+        const optGrid = document.getElementById('options-grid');
+        optGrid.style.display = 'grid';
+        const options = generateOptions(correctAnswer, field);
+        optGrid.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => handleAnswer(opt, correctAnswer, btn);
+            optGrid.appendChild(btn);
+        });
+    }
+
+    // ==========================================
+    // HANDLE ANSWER (multiple choice)
+    // ==========================================
+    function handleAnswer(selected, correct, btnEl) {
+        if (!state.answering) return;
+        state.answering = false;
+
+        const isCorrect = selected === correct;
+        const timeTaken = (Date.now() - state.problemStart) / 1000;
+        const allBtns = document.querySelectorAll('.option-btn');
+
+        if (isCorrect) {
+            state.correct++;
+            state.streak++;
+            if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+            btnEl.classList.add('correct');
+            allBtns.forEach(b => { if (b !== btnEl) b.classList.add('disabled'); });
+            let earned = XP_CORRECT;
+            if (state.streak >= 5) earned += XP_STREAK_BONUS;
+            if (timeTaken < 3) earned += XP_FAST_BONUS;
+            addXP(earned);
+            showFeedback(true);
+            updateCountryStats(state.currentQ.country, true);
+            if (state.streak > 0 && state.streak % 5 === 0) fireConfetti();
+        } else {
+            state.streak = 0;
+            btnEl.classList.add('wrong');
+            allBtns.forEach(b => {
+                if (b.textContent === correct) b.classList.add('reveal');
+                else if (b !== btnEl) b.classList.add('disabled');
+            });
+            showFeedback(false, correct);
+            updateCountryStats(state.currentQ.country, false);
+            state.mistakes.push(state.currentQ);
+        }
+
+        document.getElementById('streak-display').textContent = 'Streak: ' + state.streak;
+        state.asked++;
+        setTimeout(nextQuestion, isCorrect ? 800 : 2000);
+    }
+
+    // ==========================================
+    // FEEDBACK
+    // ==========================================
+    function showFeedback(success, correctVal) {
+        const overlay = document.getElementById('feedback-overlay');
+        const pool = success ? THEMES[state.theme].correct : THEMES[state.theme].incorrect;
+        const msg = pool[Math.floor(Math.random() * pool.length)];
+        overlay.textContent = msg;
+        overlay.style.color = success ? 'var(--success)' : 'var(--danger)';
+        overlay.classList.add('show');
+        setTimeout(() => overlay.classList.remove('show'), 1000);
+
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain); gain.connect(ctx.destination);
+            if (success) {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(784, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+            } else {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+            }
+            osc.start(); osc.stop(ctx.currentTime + 0.3);
+        } catch(e) {}
+    }
+
+    // ==========================================
+    // FINISH GAME
+    // ==========================================
+    function finishGame() {
+        stopTimer();
+        showScreen('end');
+        const total = state.queue.length;
+        const accuracy = total > 0 ? Math.round(state.correct / total * 100) : 0;
+        document.getElementById('end-correct').textContent = state.correct + '/' + total;
+        document.getElementById('end-accuracy').textContent = accuracy + '%';
+        document.getElementById('end-streak').textContent = state.bestStreak;
+
+        const titles = accuracy >= 90 ? ["Geography Genius!","Map Master!","Capital Expert!"]
+            : accuracy >= 70 ? ["Great Explorer!","Well Travelled!","Getting There!"]
+            : accuracy >= 50 ? ["Keep Exploring!","On Your Way!","Good Effort!"]
+            : ["Keep Practising!","You'll Get There!","Try Again!"];
+        document.getElementById('end-title').textContent = titles[Math.floor(Math.random() * titles.length)];
+
+        if (accuracy >= 90) { addXP(50); document.getElementById('xp-gain').textContent = "+50 Bonus XP!"; fireConfetti(); }
+        else if (accuracy >= 70) { addXP(20); document.getElementById('xp-gain').textContent = "+20 Bonus XP!"; }
+        else { document.getElementById('xp-gain').textContent = ''; }
+
+        const mistakesEl = document.getElementById('end-mistakes');
+        if (state.mistakes.length > 0) {
+            mistakesEl.innerHTML = '<p style="font-weight:800;margin-bottom:6px;">Review these:</p>' +
+                state.mistakes.map(m =>
+                    '<div style="padding:6px 10px;margin:3px 0;border-radius:8px;background:rgba(239,68,68,0.08);font-size:0.9rem;">' +
+                    m.flag + ' <strong>' + m.country + '</strong> &mdash; ' + m.capital + '</div>'
+                ).join('');
+        } else {
+            mistakesEl.innerHTML = '<p style="color:var(--success);font-weight:800;">Perfect round! No mistakes!</p>';
+        }
+    }
+
+    // ==========================================
+    // STATS
+    // ==========================================
+    function updateCountryStats(country, correct) {
+        const s = state.stats[country] || { attempts: 0, correct: 0, streak: 0 };
+        s.attempts++;
+        if (correct) { s.correct++; s.streak++; } else { s.streak = 0; }
+        state.stats[country] = s;
+        localStorage.setItem(STORAGE_KEY + 'stats', JSON.stringify(state.stats));
+    }
+
+    function getBoxClass(country) {
+        const s = state.stats[country];
+        if (!s) return 'box-new';
+        const ratio = s.attempts > 0 ? s.correct / s.attempts : 0;
+        if (s.streak >= 3 && ratio >= 0.8) return 'box-mastered';
+        if (ratio >= 0.7) return 'box-good';
+        if (ratio >= 0.4) return 'box-learning';
+        if (s.attempts > 0) return 'box-struggling';
+        return 'box-new';
+    }
+
+    function renderStats() {
+        // Grid view
+        const grid = document.getElementById('stats-grid');
+        grid.innerHTML = '';
+        let mastered = 0, learning = 0, notStarted = 0;
+
+        EU_COUNTRIES.forEach(c => {
+            const box = getBoxClass(c.country);
+            const s = state.stats[c.country];
+            if (box === 'box-mastered') mastered++;
+            else if (box === 'box-new') notStarted++;
+            else learning++;
+
+            const card = document.createElement('div');
+            card.className = 'stat-card ' + box;
+            card.innerHTML = '<div class="stat-flag">' + c.flag + '</div>' +
+                '<div class="stat-name">' + c.country + '</div>' +
+                '<div class="stat-capital">' + c.capital + '</div>' +
+                (s ? '<div style="font-size:0.6rem;margin-top:2px;">' + s.correct + '/' + s.attempts + '</div>' : '');
+            grid.appendChild(card);
+        });
+
+        document.getElementById('stats-mastered').textContent = mastered;
+        document.getElementById('stats-learning').textContent = learning;
+        document.getElementById('stats-new').textContent = notStarted;
+
+        // Map view
+        renderStatsMap();
+    }
+
+    function resetProgress() {
+        if (confirm('Reset all progress? This cannot be undone!')) {
+            state.stats = {}; state.xp = 0;
+            localStorage.removeItem(STORAGE_KEY + 'stats');
+            localStorage.removeItem(STORAGE_KEY + 'xp');
+            updateXPBar(); renderStats();
+        }
+    }
+
+    // ==========================================
+    // STUDY MODE TOGGLE
+    // ==========================================
+    function setStudyView(view) {
+        state.studyView = view;
+        document.getElementById('study-map-view').style.display = view === 'map' ? 'block' : 'none';
+        document.getElementById('study-cards-view').style.display = view === 'cards' ? 'block' : 'none';
+        const btns = document.querySelectorAll('#learn-screen .study-toggle-btn');
+        btns.forEach(b => b.classList.toggle('active', b.textContent.toLowerCase() === view));
+        if (view === 'map') renderStudyMap();
+    }
+
+    function setStatsView(view) {
+        state.statsView = view;
+        document.getElementById('stats-map-view').style.display = view === 'map' ? 'block' : 'none';
+        document.getElementById('stats-grid-view').style.display = view === 'grid' ? 'block' : 'none';
+        const btns = document.querySelectorAll('#stats-screen .study-toggle-btn');
+        btns.forEach(b => b.classList.toggle('active',
+            (view === 'map' && b.textContent === 'Map') || (view === 'grid' && b.textContent === 'Grid')));
+    }
+
+    // ==========================================
+    // LEARN MODE (flashcards)
+    // ==========================================
+    function initLearn() {
+        state.learnIndex = 0;
+        renderLearnCard();
+        if (state.studyView === 'map') renderStudyMap();
+    }
+
+    function renderLearnCard() {
+        const c = state.learnList[state.learnIndex];
+        document.getElementById('learn-flag').textContent = c.flag;
+        document.getElementById('learn-country').textContent = c.country;
+        const capEl = document.getElementById('learn-capital');
+        capEl.textContent = c.capital;
+        capEl.style.opacity = '0'; capEl.style.cursor = 'pointer';
+        document.getElementById('learn-counter').textContent = (state.learnIndex + 1) + ' / ' + state.learnList.length;
+        const card = document.getElementById('learn-card');
+        card.style.animation = 'none'; card.offsetHeight;
+        card.style.animation = 'slideUp 0.3s ease';
+    }
+
+    function revealCapital() {
+        const el = document.getElementById('learn-capital');
+        el.style.opacity = '1'; el.style.cursor = 'default';
+    }
+
+    function learnNext() {
+        state.learnIndex = (state.learnIndex + 1) % state.learnList.length;
+        renderLearnCard();
+    }
+
+    function learnPrev() {
+        state.learnIndex = (state.learnIndex - 1 + state.learnList.length) % state.learnList.length;
+        renderLearnCard();
+    }
+
+    function shuffleLearn() {
+        for (let i = state.learnList.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [state.learnList[i], state.learnList[j]] = [state.learnList[j], state.learnList[i]];
+        }
+        state.learnIndex = 0;
+        renderLearnCard();
+    }
+
+    // ==========================================
+    // XP & LEVELING
+    // ==========================================
+    function addXP(amount) {
+        const oldLevel = Math.floor(state.xp / 100) + 1;
+        state.xp += amount;
+        localStorage.setItem(STORAGE_KEY + 'xp', state.xp);
+        updateXPBar();
+        if (Math.floor(state.xp / 100) + 1 > oldLevel) { fireConfetti(); showFeedback(true); }
+    }
+
+    function updateXPBar() {
+        const level = Math.floor(state.xp / 100) + 1;
+        const xpInLevel = state.xp % 100;
+        document.getElementById('level-display').textContent = 'LVL ' + level;
+        document.getElementById('xp-text').textContent = xpInLevel + ' / 100 XP';
+        document.getElementById('xp-bar-fill').style.width = xpInLevel + '%';
+    }
+
+    // ==========================================
+    // TIMER
+    // ==========================================
+    function startTimer() {
+        state.timerStart = Date.now();
+        state.timerInterval = setInterval(() => {
+            document.getElementById('timer-display').textContent = Math.floor((Date.now() - state.timerStart) / 1000) + 's';
+        }, 1000);
+    }
+    function stopTimer() { clearInterval(state.timerInterval); }
+
+    // ==========================================
+    // NAVIGATION
+    // ==========================================
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id + '-screen').classList.add('active');
+        if (id === 'stats') renderStats();
+        if (id === 'learn') initLearn();
+    }
+
+    // ==========================================
+    // CONFETTI
+    // ==========================================
+    function fireConfetti() {
+        const colors = {
+            explorer: ['#2563eb','#f59e0b','#10b981'],
+            agent: ['#dc2626','#18181b','#ffffff'],
+            vintage: ['#92400e','#065f46','#fef3c7'],
+            pixel: ['#7c3aed','#06b6d4','#ffffff']
+        };
+        confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 }, colors: colors[state.theme] || colors.explorer });
+    }
+
+    // ==========================================
+    // SWIPE (learn mode on iPad)
+    // ==========================================
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+    document.addEventListener('touchend', e => {
+        if (!document.getElementById('learn-screen').classList.contains('active')) return;
+        if (state.studyView !== 'cards') return;
+        const diff = e.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(diff) > 60) { diff > 0 ? learnPrev() : learnNext(); }
+    }, { passive: true });
+
+    // ==========================================
+    // KEYBOARD
+    // ==========================================
+    document.addEventListener('keydown', e => {
+        if (document.getElementById('learn-screen').classList.contains('active') && state.studyView === 'cards') {
+            if (e.key === 'ArrowRight') learnNext();
+            if (e.key === 'ArrowLeft') learnPrev();
+            if (e.key === ' ') { e.preventDefault(); revealCapital(); }
+        }
+    });
+
+    // ==========================================
+    // GO!
+    // ==========================================
+    init();
     </script>
 </body>
-
 </html>
