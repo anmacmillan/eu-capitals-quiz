@@ -68,25 +68,30 @@
 
     /* ===== TEACH MODE ===== */
     .teach-panel {
-      position: absolute; bottom: 12px; left: 8px; right: 8px;
-      background: var(--card); border-radius: var(--radius); padding: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,.15); display: none; text-align: center;
+      position: absolute; bottom: 6px; left: 6px; right: 6px;
+      background: var(--card); border-radius: var(--radius);
+      padding: 8px 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.15); display: none;
       z-index: 35; border: 1px solid rgba(0,0,0,.06);
     }
-    .teach-panel.show { display: block; animation: slideUp .3s ease; }
-    .teach-flag { font-size: 3rem; }
-    .teach-name { font-size: 1.5rem; font-weight: 900; margin: 4px 0; }
-    .teach-capital { font-size: 1.1rem; color: var(--primary); font-weight: 700; }
-    .teach-detail { font-size: .85rem; color: var(--text2); margin-top: 4px; }
-    .teach-nav { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
-    .teach-progress { display: flex; gap: 4px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+    .teach-panel.show { display: flex; align-items: center; gap: 10px; animation: slideUp .2s ease; flex-wrap: wrap; }
+    .teach-info { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+    .teach-flag { font-size: 1.8rem; flex-shrink: 0; }
+    .teach-texts { min-width: 0; }
+    .teach-name { font-size: 1rem; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .teach-capital { font-size: .85rem; color: var(--primary); font-weight: 700; }
+    .teach-detail { font-size: .7rem; color: var(--text2); }
+    .teach-nav { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+    .teach-nav .btn { padding: 6px 14px; font-size: .85rem; margin: 0; }
+    .teach-nav .exit-btn { padding: 4px 10px; font-size: .7rem; background: var(--text2); box-shadow: none; margin: 0; }
+    .teach-progress { display: flex; gap: 3px; width: 100%; justify-content: center; }
     .teach-dot {
-      width: 10px; height: 10px; border-radius: 50%; background: rgba(0,0,0,.1);
-      transition: all .2s;
+      width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,.1);
+      transition: all .2s; flex-shrink: 0;
     }
     .teach-dot.seen { background: var(--primary); opacity: .5; }
     .teach-dot.current { background: var(--primary); transform: scale(1.3); opacity: 1; }
-    [data-theme="agent"] .teach-panel { border: 1px solid #00ff4133; box-shadow: 0 0 30px #00ff4111; }
+    [data-theme="agent"] .teach-panel { border: 1px solid #00ff4133; box-shadow: 0 0 20px #00ff4111; }
 
     /* Region progress cards */
     .region-progress { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
@@ -370,18 +375,22 @@
       <div class="info-capital" id="info-capital"></div>
     </div>
 
-    <!-- Teach panel (guided learning on map) -->
+    <!-- Teach panel (compact strip) -->
     <div class="teach-panel" id="teach-panel">
-      <div class="teach-flag" id="teach-flag"></div>
-      <div class="teach-name" id="teach-name"></div>
-      <div class="teach-capital" id="teach-capital"></div>
-      <div class="teach-detail" id="teach-detail"></div>
-      <div class="teach-progress" id="teach-dots"></div>
-      <div class="teach-nav">
-        <button class="btn" onclick="teachPrev()" style="padding:8px 16px">Previous</button>
-        <button class="btn" onclick="teachNext()" style="padding:8px 16px" id="teach-next-btn">Next</button>
+      <div class="teach-info">
+        <div class="teach-flag" id="teach-flag"></div>
+        <div class="teach-texts">
+          <div class="teach-name" id="teach-name"></div>
+          <div class="teach-capital" id="teach-capital"></div>
+          <div class="teach-detail" id="teach-detail"></div>
+        </div>
       </div>
-      <button class="btn" onclick="endTeach()" style="padding:6px 14px;font-size:.8rem;margin-top:6px;background:var(--text2);box-shadow:none">Exit Lesson</button>
+      <div class="teach-nav">
+        <button class="btn" onclick="teachPrev()">◀</button>
+        <button class="btn" onclick="teachNext()" id="teach-next-btn">▶</button>
+        <button class="btn exit-btn" onclick="endTeach()">✕</button>
+      </div>
+      <div class="teach-progress" id="teach-dots"></div>
     </div>
 
     <!-- Game HUD -->
@@ -1126,9 +1135,9 @@
     document.getElementById("teach-detail").textContent = `${c.region.charAt(0).toUpperCase() + c.region.slice(1)} Europe — ${teachState.index + 1} of ${teachState.list.length}`;
     document.getElementById("teach-panel").classList.add("show");
 
-    // Update next button text
+    // Update next button
     const nextBtn = document.getElementById("teach-next-btn");
-    nextBtn.textContent = teachState.index < teachState.list.length - 1 ? "Next" : "Finish!";
+    nextBtn.textContent = teachState.index < teachState.list.length - 1 ? "▶" : "✓";
 
     // Progress dots
     const dots = document.getElementById("teach-dots");
