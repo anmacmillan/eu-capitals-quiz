@@ -450,9 +450,14 @@
       <button class="mode-btn" onclick="launchGame('mix')"><span class="icon">🎲</span>Mix It Up!<span class="desc">All types</span></button>
       <button class="mode-btn" onclick="launchGame('spaced')"><span class="icon">🧠</span>Smart Review<span class="desc">Spaced repetition</span></button>
     </div>
+    <p style="font-weight:700;font-size:.85rem;margin-top:8px;text-align:center">Scope</p>
+    <div class="region-row">
+      <button class="region-pill active" data-scope="eu" onclick="setScope(this)">EU Only</button>
+      <button class="region-pill" data-scope="all" onclick="setScope(this)">All Europe</button>
+    </div>
     <p style="font-weight:700;font-size:.85rem;margin-top:8px;text-align:center">Region</p>
     <div class="region-row">
-      <button class="region-pill active" data-r="all" onclick="setRegion(this)">All EU</button>
+      <button class="region-pill active" data-r="all" onclick="setRegion(this)" id="region-all-btn">All EU</button>
       <button class="region-pill" data-r="western" onclick="setRegion(this)">Western</button>
       <button class="region-pill" data-r="eastern" onclick="setRegion(this)">Eastern</button>
       <button class="region-pill" data-r="northern" onclick="setRegion(this)">Northern</button>
@@ -468,7 +473,7 @@
     <p style="font-size:.85rem;color:var(--text2);margin-bottom:10px">Guided lessons — learn countries and capitals region by region</p>
     <div class="region-progress" id="learn-regions"></div>
     <div style="margin-top:8px;text-align:center">
-      <button class="mode-btn" onclick="startTeach('all')" style="max-width:100%;width:100%"><span class="icon">🌍</span>All EU Countries<span class="desc">Full tour — all 27</span></button>
+      <button class="mode-btn" onclick="startTeach('all')" style="max-width:100%;width:100%" id="learn-all-btn"><span class="icon">🌍</span>All Countries<span class="desc" id="learn-all-desc">Full tour — all 27</span></button>
     </div>
   </div>
 
@@ -586,9 +591,30 @@
     {iso:"SE",name:"Sweden",capital:"Stockholm",flag:"\u{1F1F8}\u{1F1EA}",region:"northern"}
   ];
 
+  const NON_EU_COUNTRIES = [
+    {iso:"AL",name:"Albania",capital:"Tirana",flag:"\u{1F1E6}\u{1F1F1}",region:"southern",eu:false},
+    {iso:"BA",name:"Bosnia and Herzegovina",capital:"Sarajevo",flag:"\u{1F1E7}\u{1F1E6}",region:"eastern",eu:false},
+    {iso:"BY",name:"Belarus",capital:"Minsk",flag:"\u{1F1E7}\u{1F1FE}",region:"eastern",eu:false},
+    {iso:"CH",name:"Switzerland",capital:"Bern",flag:"\u{1F1E8}\u{1F1ED}",region:"western",eu:false},
+    {iso:"GB",name:"United Kingdom",capital:"London",flag:"\u{1F1EC}\u{1F1E7}",region:"western",eu:false},
+    {iso:"IS",name:"Iceland",capital:"Reykjavik",flag:"\u{1F1EE}\u{1F1F8}",region:"northern",eu:false},
+    {iso:"MD",name:"Moldova",capital:"Chișinău",flag:"\u{1F1F2}\u{1F1E9}",region:"eastern",eu:false},
+    {iso:"ME",name:"Montenegro",capital:"Podgorica",flag:"\u{1F1F2}\u{1F1EA}",region:"southern",eu:false},
+    {iso:"MK",name:"North Macedonia",capital:"Skopje",flag:"\u{1F1F2}\u{1F1F0}",region:"southern",eu:false},
+    {iso:"NO",name:"Norway",capital:"Oslo",flag:"\u{1F1F3}\u{1F1F4}",region:"northern",eu:false},
+    {iso:"RS",name:"Serbia",capital:"Belgrade",flag:"\u{1F1F7}\u{1F1F8}",region:"eastern",eu:false},
+    {iso:"RU",name:"Russia",capital:"Moscow",flag:"\u{1F1F7}\u{1F1FA}",region:"eastern",eu:false},
+    {iso:"TR",name:"Turkey",capital:"Ankara",flag:"\u{1F1F9}\u{1F1F7}",region:"southern",eu:false},
+    {iso:"UA",name:"Ukraine",capital:"Kyiv",flag:"\u{1F1FA}\u{1F1E6}",region:"eastern",eu:false},
+    {iso:"XK",name:"Kosovo",capital:"Pristina",flag:"\u{1F1FD}\u{1F1F0}",region:"southern",eu:false}
+  ];
+
+  EU.forEach(c => c.eu = true);
+  const ALL_COUNTRIES = [...EU, ...NON_EU_COUNTRIES];
   const EU_ISO = new Set(EU.map(c => c.iso));
-  const EU_MAP = {}; EU.forEach(c => EU_MAP[c.iso] = c);
-  const NON_EU = ["AL","BA","BY","CH","GB","IS","MD","ME","MK","NO","RS","RU","TR","UA"];
+  const ALL_MAP = {}; ALL_COUNTRIES.forEach(c => ALL_MAP[c.iso] = c);
+  const EU_MAP = ALL_MAP;
+  const NON_EU = NON_EU_COUNTRIES.map(c => c.iso);
   const STORAGE = "eq2_";
   const ROUND_SIZE = 15;
 
@@ -600,6 +626,7 @@
     xp: +(localStorage.getItem(STORAGE+"xp")||0),
     theme: localStorage.getItem(STORAGE+"theme")||"",
     region: "all",
+    scope: localStorage.getItem(STORAGE+"scope")||"eu",
     // game
     mode: null, queue: [], qi: 0, correct: 0, streak: 0, bestStreak: 0,
     mistakes: [], answering: false, tStart: null, tInterval: null, qStart: null,
@@ -613,6 +640,13 @@
     applyTheme(S.theme);
     renderMap();
     updateXP();
+    // Restore scope from storage
+    if (S.scope === "all") {
+      const btn = document.querySelector('[data-scope="all"]');
+      if (btn) { document.querySelectorAll('[data-scope]').forEach(p => p.classList.remove("active")); btn.classList.add("active"); }
+      const allBtn = document.getElementById("region-all-btn");
+      if (allBtn) allBtn.textContent = "All Europe";
+    }
   }
 
   // ==========================================
@@ -646,14 +680,8 @@
     html += '<text x="500" y="770" class="sea-label" font-size="13">Mediterranean Sea</text>';
     html += '<text x="900" y="680" class="sea-label">Black Sea</text>';
 
-    // Non-EU countries (grey background)
-    NON_EU.forEach(iso => {
-      const p = SVG_PATHS[iso];
-      if (p) html += `<path d="${p.d}" class="context-country"/>`;
-    });
-
-    // EU countries
-    EU.forEach(c => {
+    // All countries (interactive)
+    ALL_COUNTRIES.forEach(c => {
       const p = SVG_PATHS[c.iso];
       if (!p) return;
       html += `<path d="${p.d}" class="eu-country" data-iso="${c.iso}" onclick="onCountryClick('${c.iso}')" ontouchend=""/>`;
@@ -661,10 +689,10 @@
 
     // Labels group (can be hidden during quiz)
     html += '<g id="map-labels">';
-    EU.forEach(c => {
+    ALL_COUNTRIES.forEach(c => {
       const p = SVG_PATHS[c.iso];
       if (!p) return;
-      const fs = ["MT","LU","SI","CY"].includes(c.iso) ? 5 : (["BE","NL","DK","EE","LV","LT","SK","HR"].includes(c.iso) ? 5.5 : 6.5);
+      const fs = ["MT","LU","SI","CY","ME","MK","AL","XK"].includes(c.iso) ? 5 : (["BE","NL","DK","EE","LV","LT","SK","HR","BA","MD","CH"].includes(c.iso) ? 5.5 : 6.5);
       html += `<text x="${p.cx}" y="${p.cy+2}" class="country-label" font-size="${fs}">${c.name}</text>`;
     });
     html += '</g>';
@@ -732,23 +760,38 @@
   // ==========================================
   // REGION
   // ==========================================
+  function setScope(el) {
+    S.scope = el.dataset.scope;
+    localStorage.setItem(STORAGE+"scope", S.scope);
+    document.querySelectorAll('[data-scope]').forEach(p => p.classList.toggle("active", p===el));
+    const allBtn = document.getElementById("region-all-btn");
+    if (allBtn) allBtn.textContent = S.scope === "all" ? "All Europe" : "All EU";
+    const learnDesc = document.getElementById("learn-all-desc");
+    if (learnDesc) learnDesc.textContent = "Full tour — all " + getActiveCountries().length;
+  }
+
+  function getActiveCountries() {
+    return S.scope === "all" ? ALL_COUNTRIES : EU;
+  }
+
   function setRegion(el) {
     S.region = el.dataset.r;
-    document.querySelectorAll(".region-pill").forEach(p => p.classList.toggle("active", p===el));
+    document.querySelectorAll('[data-r]').forEach(p => p.classList.toggle("active", p===el));
   }
 
   function getFilteredCountries() {
-    if (S.region === "all") return [...EU];
+    const base = getActiveCountries();
+    if (S.region === "all") return [...base];
     if (S.region === "weak") {
-      const scored = EU.map(c => {
+      const scored = base.map(c => {
         const s = S.stats[c.iso];
         if (!s) return {...c, score: -1};
         return {...c, score: s.attempts > 0 ? s.correct/s.attempts : 0};
       });
       scored.sort((a,b) => a.score - b.score);
-      return scored.slice(0, Math.max(10, Math.ceil(EU.length/2)));
+      return scored.slice(0, Math.max(10, Math.ceil(base.length/2)));
     }
-    return EU.filter(c => c.region === S.region);
+    return base.filter(c => c.region === S.region);
   }
 
   // ==========================================
@@ -763,7 +806,7 @@
     if (mode === "spaced") {
       // Spaced repetition: score each country by weakness
       const now = Date.now();
-      const scored = EU.map(c => {
+      const scored = getActiveCountries().map(c => {
         const s = S.stats[c.iso];
         if (!s) return { ...c, priority: 100 }; // Never seen = high priority
         const ratio = s.attempts > 0 ? s.correct / s.attempts : 0;
@@ -980,7 +1023,7 @@
   }
 
   function generateOptions(correct, field) {
-    const all = EU.map(c => c[field]);
+    const all = getActiveCountries().map(c => c[field]);
     const opts = [correct];
     while (opts.length < 4) {
       const r = all[Math.floor(Math.random()*all.length)];
@@ -1079,19 +1122,26 @@
   // ==========================================
   // TEACH MODE (guided learning)
   // ==========================================
-  const REGIONS = {
-    northern: { name: "Northern Europe", emoji: "❄️", countries: EU.filter(c => c.region === "northern") },
-    western: { name: "Western Europe", emoji: "🏰", countries: EU.filter(c => c.region === "western") },
-    southern: { name: "Southern Europe", emoji: "☀️", countries: EU.filter(c => c.region === "southern") },
-    eastern: { name: "Eastern Europe", emoji: "🏔️", countries: EU.filter(c => c.region === "eastern") }
-  };
+  function getRegions() {
+    const src = getActiveCountries();
+    return {
+      northern: { name: "Northern Europe", emoji: "❄️", countries: src.filter(c => c.region === "northern") },
+      western: { name: "Western Europe", emoji: "🏰", countries: src.filter(c => c.region === "western") },
+      southern: { name: "Southern Europe", emoji: "☀️", countries: src.filter(c => c.region === "southern") },
+      eastern: { name: "Eastern Europe", emoji: "🏔️", countries: src.filter(c => c.region === "eastern") }
+    };
+  }
 
   let teachState = { list: [], index: 0, active: false };
 
   function renderLearnRegions() {
     const el = document.getElementById("learn-regions");
     el.innerHTML = "";
-    for (const [key, reg] of Object.entries(REGIONS)) {
+    const regions = getRegions();
+    // Update "All Countries" button count
+    const learnDesc = document.getElementById("learn-all-desc");
+    if (learnDesc) learnDesc.textContent = "Full tour — all " + getActiveCountries().length;
+    for (const [key, reg] of Object.entries(regions)) {
       const total = reg.countries.length;
       const mastered = reg.countries.filter(c => getBox(c.iso) === "mastered" || getBox(c.iso) === "good").length;
       const pct = total > 0 ? Math.round(mastered / total * 100) : 0;
@@ -1110,9 +1160,9 @@
   function startTeach(regionKey) {
     closeDrawers();
     if (regionKey === "all") {
-      teachState.list = [...EU];
+      teachState.list = [...getActiveCountries()];
     } else {
-      teachState.list = REGIONS[regionKey].countries;
+      teachState.list = getRegions()[regionKey].countries;
     }
     teachState.index = 0;
     teachState.active = true;
@@ -1238,7 +1288,7 @@
     const grid = document.getElementById("stats-grid");
     grid.innerHTML = "";
     let mastered=0, learning=0, notStarted=0;
-    EU.forEach(c => {
+    getActiveCountries().forEach(c => {
       const box = getBox(c.iso);
       const s = S.stats[c.iso];
       if (box==="mastered") mastered++;
