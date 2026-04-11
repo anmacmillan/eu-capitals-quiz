@@ -1265,10 +1265,13 @@
   // STATS
   // ==========================================
   function updateStat(iso, correct) {
-    const s = S.stats[iso] || {attempts:0,correct:0,streak:0,lastSeen:0};
+    const s = S.stats[iso] || {attempts:0,correct:0,streak:0,lastSeen:0,recent:[]};
+    if (!s.recent) s.recent = [];
     s.attempts++;
     s.lastSeen = Date.now();
     if (correct) { s.correct++; s.streak++; } else { s.streak = 0; }
+    s.recent.push(correct ? 1 : 0);
+    if (s.recent.length > 10) s.recent.shift();
     S.stats[iso] = s;
     localStorage.setItem(STORAGE+"stats", JSON.stringify(S.stats));
   }
@@ -1276,7 +1279,9 @@
   function getBox(iso) {
     const s = S.stats[iso];
     if (!s) return "new";
-    const r = s.attempts > 0 ? s.correct/s.attempts : 0;
+    const recent = s.recent && s.recent.length > 0 ? s.recent : [];
+    const r = recent.length > 0 ? recent.reduce((a,b)=>a+b,0)/recent.length
+      : (s.attempts > 0 ? s.correct/s.attempts : 0);
     if (s.streak >= 3 && r >= .8) return "mastered";
     if (r >= .7) return "good";
     if (r >= .4) return "learning";
